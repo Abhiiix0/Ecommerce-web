@@ -146,13 +146,13 @@ const Cart = () => {
                 </p>
                 <div className=" text-[13px] sm:text-[15px] flex justify-between">
                   <p>Total MRP</p>
-                  <p>₹400</p>
+                  <p>₹{totalCartPrice}</p>
                 </div>{" "}
                 <div className=" text-[13px] sm:text-[15px] flex justify-between">
                   <p>Delivery</p>
 
                   {totalCartPrice <= 1499 ? (
-                    <p>100</p>
+                    <p>₹100</p>
                   ) : (
                     <p>
                       <span className=" line-through">₹100</span>{" "}
@@ -182,7 +182,13 @@ const Cart = () => {
               >
                 <div className=" flex  justify-between items-center w-full mb-3 lg:mb-4">
                   <p className="text-[13px] lg:text-[18px] ">Total Amount</p>
-                  <p className="font-semibold"> ₹{totalCartPrice}</p>
+                  <p className="font-semibold">
+                    {" "}
+                    ₹
+                    {totalCartPrice < 1500
+                      ? totalCartPrice + 100
+                      : totalCartPrice}
+                  </p>
                 </div>
                 <button className=" w-full border py-2 rounded-md bg-orange-600 hover:bg-orange-700 transition-all duration-100 ease-linear text-white tracking-wider">
                   Chekout

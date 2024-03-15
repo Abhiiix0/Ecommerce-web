@@ -59,7 +59,12 @@ export const cartSlice = createSlice({
       const ItemId = action.payload;
       state.cart.filter((p) => {
         if (p.id === ItemId) {
-          p.qty += 1;
+          if (p.qty === 9) {
+            p.qty = 9;
+          } else {
+            p.qty += 1;
+          }
+          // p.qty += 1;
           // p.price = p.price * p.qty;
         }
 
@@ -73,7 +78,11 @@ export const cartSlice = createSlice({
       const ItemId = action.payload;
       state.cart.filter((p) => {
         if (p.id === ItemId) {
-          p.qty -= 1;
+          if (p.qty <= 1) {
+            p.qty = 1;
+          } else {
+            p.qty -= 1;
+          }
           // p.price = p.price * p.qty;
         }
         console.log(state.cart);
