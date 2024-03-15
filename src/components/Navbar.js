@@ -508,14 +508,14 @@ const Navbar = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className=" relative  ">
+                  <NavLink to="/cart" className=" relative  ">
                     <Badge
                       count={cartItem}
                       size="small"
                       className=" absolute p-0 top-0 right-0 h-2 text-[10px]  mr-[-10px] mt-[-5px]"
                     ></Badge>
                     <ShoppingBagOutlinedIcon id="bag" />
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>
