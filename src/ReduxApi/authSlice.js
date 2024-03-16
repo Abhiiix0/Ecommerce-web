@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { useNavigate } from "react-router-dom";
 let storedUser = JSON.parse(localStorage.getItem("auth")) || null;
 console.log("hii", storedUser);
 let initialState = {
@@ -19,6 +19,7 @@ const authSlice = createSlice({
       localStorage.setItem("auth", JSON.stringify(action.payload));
     },
     logout: (state) => {
+      // const navigate = useNavigate();
       state.currentUser = null;
       state.token = null;
       state.isAuthenticated = false;

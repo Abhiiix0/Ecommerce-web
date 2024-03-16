@@ -6,7 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Headroom from "react-headroom";
 import { DownOutlined, UserOutlined } from "@ant-design/icons";
 
@@ -24,6 +24,8 @@ import { logout } from "../ReduxApi/authSlice";
 // import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../ReduxApi/authSlice";
 const Navbar = () => {
+  const navigate = useNavigate();
+
   const [messageApi, contextHolder] = message.useMessage();
   const { register, handleSubmit, reset } = useForm();
   const cartItemssss = useSelector((state) => state.cart);
@@ -42,7 +44,10 @@ const Navbar = () => {
   }
 
   function logoutt() {
+    reset();
     dispatch(logout());
+
+    navigate("/");
   }
   useEffect(() => {
     totalcart();
@@ -168,7 +173,11 @@ const Navbar = () => {
   };
   const items = [
     {
-      label: <a className=" pr-10">My Profile</a>,
+      label: (
+        <NavLink to="/user/account" className=" pr-10">
+          My Profile
+        </NavLink>
+      ),
       key: "0",
     },
     {
@@ -388,7 +397,7 @@ const Navbar = () => {
                         })}
                       />
                     </div>
-                    <div className=" flex justify-between">
+                    <div className=" ">
                       <div className=" gap-1 flex items-center">
                         <input
                           type="checkbox"
@@ -400,7 +409,7 @@ const Navbar = () => {
                         {/* <input type="" name="" id="" /> */}
                         <label htmlFor="showP">Show Password</label>
                       </div>
-                      <p>Forget Password?</p>
+                      {/* <p>Forget Password?</p> */}
                     </div>
                     <button
                       type="submit"
@@ -432,7 +441,7 @@ const Navbar = () => {
           <nav
             // style={{ position: "fixed", top: stickyclass ? "0px" : "28[" }}
             // style={{ position: stickyclass ? "fixed" : " " }}
-            className="  bg-white h-[70px] z-50  shadow-md lg:shadow-[0] lg:border-b-2 border-gray-300 lg:h-[94px] w-full flex items-center justify-between px-2 lg:px-8"
+            className="  bg-white h-[70px] z-50  lg:shadow-[0] lg:border-b-2 border-gray-300 lg:h-[94px] w-full flex items-center justify-between px-2 lg:px-8"
           >
             <div className=" flex justify-between items-center w-full">
               <span className="flex items-center gap-1">
@@ -549,7 +558,7 @@ const Navbar = () => {
                   {isAuthenticated ? (
                     <div>
                       <li className=" font-normal text-[16px]">
-                        <p>My Account</p>
+                        <NavLink to="/user/account">My Account</NavLink>
                       </li>
 
                       <li className="mt-4 font-normal text-[16px]">
