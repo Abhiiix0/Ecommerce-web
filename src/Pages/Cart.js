@@ -20,16 +20,16 @@ const Cart = () => {
   }
   pri();
 
-  function removeitemfromcart(id) {
-    dispatch(removeItem(id));
+  function removeitemfromcart(_id) {
+    dispatch(removeItem(_id));
   }
 
-  function Increaseitemqty(id) {
-    dispatch(IncreaseItemQty(id));
+  function Increaseitemqty(_id) {
+    dispatch(IncreaseItemQty(_id));
   }
 
-  function Decreaseitemqty(id) {
-    dispatch(DecreaseItemQty(id));
+  function Decreaseitemqty(_id) {
+    dispatch(DecreaseItemQty(_id));
   }
   return (
     <>
@@ -105,7 +105,7 @@ const Cart = () => {
                             <div className=" mt-2 flex justify-between items-center">
                               <div className=" flex gap-1">
                                 <div
-                                  onClick={() => Decreaseitemqty(products.id)}
+                                  onClick={() => Decreaseitemqty(products._id)}
                                   className=" cursor-pointer bg-gray-200 h-5 md:h-7 w-5 md:w-7 rounded-sm flex items-center justify-center text-xl"
                                 >
                                   -
@@ -114,7 +114,7 @@ const Cart = () => {
                                   {products.qty}
                                 </div>
                                 <div
-                                  onClick={() => Increaseitemqty(products.id)}
+                                  onClick={() => Increaseitemqty(products._id)}
                                   className=" cursor-pointer bg-gray-200 h-5 md:h-7 w-5 md:w-7 rounded-sm flex items-center justify-center text-[16px] md:text-[20px] "
                                 >
                                   +
@@ -123,7 +123,7 @@ const Cart = () => {
                               <p className=" text-[14px]  sm:text-[18px] cursor-pointer pb-[-2px] sm:pb-[5px] ">
                                 <span
                                   onClick={() =>
-                                    removeitemfromcart(products.id)
+                                    removeitemfromcart(products._id)
                                   }
                                   className="text-gray-500 hover:text-gray-700"
                                 >
@@ -191,7 +191,7 @@ const Cart = () => {
                   </p>
                 </div>
                 <button className=" w-full border py-2 rounded-md bg-orange-600 hover:bg-orange-700 transition-all duration-100 ease-linear text-white tracking-wider">
-                  Chekout
+                  Checkout
                 </button>
               </div>
               {/* <div className=" mb-3">Shipping & Refund Policy</div> */}

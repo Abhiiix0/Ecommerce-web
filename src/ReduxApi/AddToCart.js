@@ -13,9 +13,10 @@ export const cartSlice = createSlice({
     // add to cart recux logic
     addToCart: (state, action) => {
       var data = action.payload;
+      console.log("sdf0", data);
       var exicting = state.cart.find((p) => p._id === data._id);
       if (exicting) {
-        // console.log(data);
+        console.log("data aaya cart me", data);
         exicting.qty += 1;
         console.log(data);
       } else {
@@ -30,7 +31,7 @@ export const cartSlice = createSlice({
       // data = { ...data, qty: 1 };
       // state.cart.push(data);
       // console.log(data);
-
+      console.log(state);
       // console.log(calculateTotalPrice(state.cart));
       localStorage.setItem("cart", JSON.stringify(state));
     },
