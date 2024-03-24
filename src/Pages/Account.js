@@ -489,9 +489,10 @@ const Account = () => {
                   //     isEdit ? "border p-2 rounded-md" : ""
                   //   } bg-transparent outline-none text-xl lg:text-2xl`}
                   // />
-                  <p className=" text-[16px]">
-                    {address2.building_no}, {address2.city}, {address2.state} :-
-                    {address2.pincode}, {address2.county}
+                  <p className="text-xl lg:text-2xl mb-4 h-8">
+                    {authData.address.Area}, {authData.address.city},{" "}
+                    {authData.address.state} :-
+                    {authData.address.pincode}, {authData.address.county}
                   </p>
                 )}
               </div>
@@ -683,9 +684,9 @@ const Account = () => {
                       //   } bg-transparent outline-none text-xl lg:text-2xl`}
                       // />
                       <p className=" text-xl lg:text-2xl">
-                        {userData?.dob === null
+                        {authData?.dob === null
                           ? ""
-                          : userData?.dob.slice(0, 10)}
+                          : authData?.dob.slice(0, 10)}
                       </p>
                     )}
                   </div>
@@ -696,7 +697,9 @@ const Account = () => {
                     {isEdit ? (
                       <Select
                         // defaultValue={"Other"}
-                        defaultValue={userData.gender || ""}
+                        defaultValue={
+                          authData.gender === "" ? "" : authData.gender
+                        }
                         name="gender"
                         // {...register("gender")}
                         className=" w-[243px] lg:w-[289px] text-xl font-semibold lg:text-2xl h-12"
@@ -710,7 +713,7 @@ const Account = () => {
                       </Select>
                     ) : (
                       <p className="bg-transparent h-6 outline-none text-xl lg:text-2xl">
-                        {userData?.gender}
+                        {authData?.gender}
                       </p>
                     )}
                   </div>

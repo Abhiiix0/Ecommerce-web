@@ -9,6 +9,8 @@ import Cart from "./Pages/Cart";
 import Account from "./Pages/Account";
 import PrivateUser from "./Routes/PrivateUser";
 import { message } from "antd";
+import About from "./Pages/About";
+import StoreLocator from "./Pages/StoreLocator";
 const App = () => {
   const { contextHolder } = message.useMessage();
   return (
@@ -20,6 +22,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
+        <Route path="/store-locator" element={<StoreLocator />}></Route>
 
         <Route path="/user" element={<PrivateUser />}>
           <Route path="account" element={<Account />}></Route>

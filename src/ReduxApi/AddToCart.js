@@ -10,9 +10,10 @@ export const cartSlice = createSlice({
   name: "cartitems",
   initialState,
   reducers: {
+    // add to cart recux logic
     addToCart: (state, action) => {
       var data = action.payload;
-      var exicting = state.cart.find((p) => p.id === data.id);
+      var exicting = state.cart.find((p) => p._id === data._id);
       if (exicting) {
         // console.log(data);
         exicting.qty += 1;
@@ -36,6 +37,7 @@ export const cartSlice = createSlice({
     totalItems: (state) => {
       state.cartItem = state.cart.length;
     },
+
     totalPrice: (state) => {
       state.cartPrice = 0;
       var price = 0;
@@ -47,10 +49,12 @@ export const cartSlice = createSlice({
 
       console.log("ppp", price);
     },
+
+    //remove items from cart
     removeItem: (state, action) => {
       const idremove = action.payload;
       state.cart = state.cart.filter((i) => {
-        return i.id !== idremove;
+        return i._id !== idremove;
       });
       localStorage.setItem("cart", JSON.stringify(state));
     },
@@ -58,18 +62,13 @@ export const cartSlice = createSlice({
     IncreaseItemQty: (state, action) => {
       const ItemId = action.payload;
       state.cart.filter((p) => {
-        if (p.id === ItemId) {
+        if (p._id === ItemId) {
           if (p.qty === 9) {
             p.qty = 9;
           } else {
             p.qty += 1;
           }
-          // p.qty += 1;
-          // p.price = p.price * p.qty;
         }
-
-        // console.log(state.cart);
-        // return p.id === ItemId
       });
       localStorage.setItem("cart", JSON.stringify(state));
     },
@@ -77,7 +76,7 @@ export const cartSlice = createSlice({
     DecreaseItemQty: (state, action) => {
       const ItemId = action.payload;
       state.cart.filter((p) => {
-        if (p.id === ItemId) {
+        if (p._id === ItemId) {
           if (p.qty <= 1) {
             p.qty = 1;
           } else {
@@ -86,7 +85,7 @@ export const cartSlice = createSlice({
           // p.price = p.price * p.qty;
         }
         console.log(state.cart);
-        // return p.id === ItemId
+        // return p._id === ItemId
       });
       localStorage.setItem("cart", JSON.stringify(state));
     },

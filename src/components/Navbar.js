@@ -196,7 +196,10 @@ const Navbar = () => {
         >
           <ul className="flex items-center tracking-wider justify-between w-fit ">
             <li className=" px-3">Track Order</li>
-            <li className=" border-l-2  px-3">Store Locator</li>
+            <li className=" border-l-2  px-3">
+              {" "}
+              <NavLink to="/store-locator">Store Locations</NavLink>{" "}
+            </li>
             <li className=" border-l-2 border-r-2 px-3">
               {" "}
               <NavLink to="/contact">Contact Us</NavLink>{" "}
