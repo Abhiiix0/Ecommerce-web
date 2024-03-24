@@ -42,24 +42,10 @@ const Account = () => {
   const [ordersD, setordersD] = useState(false);
   const [userGender, setuserGender] = useState();
   const [userDOB, setuserDOB] = useState();
-  const [address, setaddress] = useState({
-    Area: "",
-    city: "",
-    state: "",
-    pincode: "",
-    county: "",
-  });
 
   // for small display
   const [userGender2, setuserGender2] = useState();
   const [userDOB2, setuserDOB2] = useState();
-  const [address2, setaddress2] = useState({
-    area: "",
-    city: "",
-    state: "",
-    pincode: "",
-    county: "",
-  });
 
   const dateFormat = "YYYY/MM/DD";
   const weekFormat = "MM/DD";
@@ -69,24 +55,21 @@ const Account = () => {
   const [isEdit, setisEdit] = useState(false);
 
   const { control } = useForm();
-  // const HandelUsserData = (Name, value) => {
-  //   setuserData({ ...userData, Name: value });
-  //   console.log(userData);
-  // };
+
+  // for small device
   const HandelUsserData2 = async (value) => {
     const userData = {
       ...authData,
       ...value,
-      gender: userGender,
-      dob: userDOB,
-      address: [address],
+      gender: userGender2,
+      dob: userDOB2,
     };
     console.log("data bheja maine", userData);
     // const res = fetch("")
     const res = await UserDataUpate(userData, token);
     // console.log(res);
     const data = await res.json();
-    console.log("Update Response", data);
+    console.log("Updateed Response", data);
     if (data.success) {
       userupdate(data);
       messageApi.open({
@@ -103,11 +86,12 @@ const Account = () => {
       });
     }
     console.log("after update", userData);
-    console.log("after update", userData.gender);
+    // console.log("after update", userData.gender);
 
     // console.log(data);
   };
 
+  //form handel for big device
   const HandelUsserData = async (value) => {
     const userData = {
       ...authData,
@@ -142,19 +126,25 @@ const Account = () => {
     // console.log(data);
   };
 
+  //to handel date on large screen
   const onChange = (date, dateString) => {
     console.log(dateString);
     setuserDOB(dateString);
   };
 
+  //to handel date on small screen
   const onChange2 = (date, dateString) => {
     console.log(dateString);
     setuserDOB2(dateString);
   };
+
+  //to handel gender on large screen
   const onChangeGender = (Gender) => {
     console.log(Gender);
     setuserGender(Gender);
   };
+
+  //to handel gender on large screen
   const onChangeGender2 = (Gender) => {
     console.log(Gender);
     setuserGender2(Gender);
@@ -165,7 +155,7 @@ const Account = () => {
     <div>
       {contextHolder}
 
-      <div className=" h-[84vh] gap-8 flex px-3 lg:px-8  ">
+      <div className=" min-h-[84vh] pb-5 gap-8 flex px-3 lg:px-8  ">
         <div className="  lg:w-[300px] w-full flex flex-col lg:border-r-2 pt-6 gap-3">
           <div
             onClick={() => {
@@ -278,7 +268,7 @@ const Account = () => {
           footer={false}
         >
           <form
-            onSubmit={handleSubmit(HandelUsserData2)}
+            onSubmit={handelsubmit2(HandelUsserData2)}
             className=" flex flex-col gap-3"
           >
             <div>
@@ -359,16 +349,8 @@ const Account = () => {
                       style={{ fontSize: "20px" }}
                     />
                   ) : (
-                    // <input
-                    //   type="text"
-                    //   disabled
-                    //   value="28/05/2003"
-                    //   className={`${
-                    //     isEdit ? "border p-2 rounded-md" : ""
-                    //   } bg-transparent outline-none text-xl lg:text-2xl`}
-                    // />
                     <p className=" text-[16px]">
-                      {userData?.dob === null ? "" : userData?.dob.slice(0, 10)}
+                      {authData?.dob === null ? "" : authData?.dob.slice(0, 10)}
                     </p>
                   )}
                 </div>
@@ -378,12 +360,13 @@ const Account = () => {
                   </p>
                   {isEdit ? (
                     <Select
-                      // defaultValue={"Other"}
-                      defaultValue={userData.gender || ""}
+                      defaultValue={
+                        authData.gender === "" ? "" : authData.gender
+                      }
                       name="gender"
                       // {...register("gender")}
                       className="w-full font-semibold h-10"
-                      onChange={onChangeGender}
+                      onChange={onChangeGender2}
                     >
                       <Option value="Male" className="text-xl">
                         Male
@@ -392,18 +375,8 @@ const Account = () => {
                       <Option value="Other">Other</Option>
                     </Select>
                   ) : (
-                    <p className="bg-transparent text-[16px]">
-                      {userData?.gender}
-                    </p>
+                    <p className=" text-[16px]">{authData?.gender}</p>
                   )}
-                  {/* <Select></Select> */}
-                  {/* <input
-                    type="text"
-
-                    className={`${
-                      isEdit ? "border p-2 rounded-md" : ""
-                    } bg-transparent w-full outline-none text-[16px]`}
-                  /> */}
                 </div>
               </div>
               <div>
@@ -422,13 +395,7 @@ const Account = () => {
                           placeholder="area"
                           className=" h-10 rounded-md w-full outline-none text-[16px] border"
                           type="text"
-                          value={address2.building_no}
-                          onChange={(e) =>
-                            setaddress2({
-                              ...address2,
-                              building_no: e.target.value,
-                            })
-                          }
+                          {...register2("address.Area")}
                         />
                       </div>
                       <div className=" mt-1">
@@ -439,10 +406,7 @@ const Account = () => {
                           placeholder="city"
                           className=" h-10 w-full px-2 rounded-md outline-none text-[16px] border"
                           type="text"
-                          value={address2.city}
-                          onChange={(e) =>
-                            setaddress({ ...address2, city: e.target.value })
-                          }
+                          {...register2("address.city")}
                         />
                       </div>
                     </div>
@@ -452,13 +416,9 @@ const Account = () => {
                           STATE
                         </p>
                         <input
-                          placeholder="area"
                           className=" h-10 rounded-md px-2 w-full outline-none text-[16px] border"
                           type="text"
-                          value={address2.state}
-                          onChange={(e) =>
-                            setaddress({ ...address2, state: e.target.value })
-                          }
+                          {...register2("address.state")}
                         />
                       </div>
                       <div className=" mt-1">
@@ -466,30 +426,15 @@ const Account = () => {
                           PINCODE
                         </p>
                         <input
-                          placeholder="area"
                           className=" h-10 rounded-md px-2 text-[16px] w-full border"
                           type="text"
-                          value={address2.pincode}
-                          onChange={(e) =>
-                            setaddress({
-                              ...address2,
-                              pincode: e.target.value,
-                            })
-                          }
+                          {...register2("address.pincode")}
                         />
                       </div>
                     </div>
                   </div>
                 ) : (
-                  // <input
-                  //   type="text"
-                  //   disabled
-                  //   value="28/05/2003"
-                  //   className={`${
-                  //     isEdit ? "border p-2 rounded-md" : ""
-                  //   } bg-transparent outline-none text-xl lg:text-2xl`}
-                  // />
-                  <p className="text-xl lg:text-2xl mb-4 h-8">
+                  <p className="text-[16px] mb-4 h-8">
                     {authData.address.Area}, {authData.address.city},{" "}
                     {authData.address.state} :-
                     {authData.address.pincode}, {authData.address.county}
@@ -516,7 +461,7 @@ const Account = () => {
                 ) : (
                   <button
                     onClick={() => setisEdit(true)}
-                    className="uppercase bg-orange-500 w-[130px]  h-10 text-white text-[14px]  font-semibold px-2 rounded-md"
+                    className="uppercase bg-orange-500 w-[120px] mt-4  h-8 text-white text-[14px]  font-semibold px-2 rounded-md"
                   >
                     Edit Profile
                   </button>
@@ -600,22 +545,20 @@ const Account = () => {
               >
                 <div className=" flex w-full gap-2">
                   <div>
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                    <p className="text-[13px] font-medium text-gray-500">
                       FUll NAME
                     </p>
                     <input
                       type="text"
                       disabled={isEdit ? false : true}
-                      // value={userData.name}
-                      // onChange={(e) => HandelUsserData("name", e.target.value)}
                       {...register("name")}
                       className={`${
                         isEdit ? "border p-2 rounded-md" : ""
-                      } bg-transparent outline-none text-xl lg:text-2xl`}
+                      } bg-transparent outline-none text-xl`}
                     />
                   </div>
                   <div>
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                    <p className="text-[13px]  font-medium text-gray-500">
                       EMAIL
                     </p>
                     <input
@@ -624,13 +567,13 @@ const Account = () => {
                       disabled={isEdit ? false : true}
                       className={`${
                         isEdit ? "border p-2 rounded-md" : ""
-                      } bg-transparent w-[380px] outline-none text-xl lg:text-2xl`}
+                      } bg-transparent w-[380px] outline-none text-xl `}
                     />
                   </div>
                 </div>
                 <div className=" flex w-full gap-2 ">
                   <div className=" ">
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                    <p className="text-[13px]  font-medium text-gray-500">
                       PHONE NUMBER
                     </p>
                     <input
@@ -639,11 +582,11 @@ const Account = () => {
                       {...register("phone")}
                       className={`${
                         isEdit ? "border p-2 rounded-md" : ""
-                      } bg-transparent outline-none text-xl lg:text-2xl`}
+                      } bg-transparent outline-none text-xl `}
                     />
                   </div>
                   <div className="">
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                    <p className="text-[13px] font-medium text-gray-500">
                       ALTERNATIVE NUMBER
                     </p>
                     <input
@@ -652,13 +595,13 @@ const Account = () => {
                       {...register("phone")}
                       className={`${
                         isEdit ? "border p-2 rounded-md" : ""
-                      } bg-transparent outline-none text-xl lg:text-2xl`}
+                      } bg-transparent outline-none text-xl `}
                     />
                   </div>
                 </div>
                 <div className=" flex w-full gap-4">
-                  <div className=" w-[235px]  lg:w-[280px]">
-                    <p className="text-[13px] h-6 lg:text-[15px] font-medium text-gray-500">
+                  <div className="w-[215px] lg:w-[215px]">
+                    <p className="text-[13px] h-6 font-medium text-gray-500">
                       DATE OF BIRTH
                     </p>
 
@@ -670,7 +613,7 @@ const Account = () => {
                             : userData?.dob.slice(0, 10)
                         )}
                         format={dateFormat}
-                        className="w-[243px] lg:w-[289px] text-xl font-semibold lg:text-2xl h-12"
+                        className="w-[213px] lg:w-[215px] text-xl font-semibold h-12"
                         onChange={onChange}
                         style={{ fontSize: "20px" }}
                       />
@@ -683,26 +626,24 @@ const Account = () => {
                       //     isEdit ? "border p-2 rounded-md" : ""
                       //   } bg-transparent outline-none text-xl lg:text-2xl`}
                       // />
-                      <p className=" text-xl lg:text-2xl">
+                      <p className=" text-xl">
                         {authData?.dob === null
                           ? ""
                           : authData?.dob.slice(0, 10)}
                       </p>
                     )}
                   </div>
-                  <div className=" w-64">
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                  <div className=" w-64 ">
+                    <p className="text-[13px]  font-medium text-gray-500">
                       GENDER
                     </p>
                     {isEdit ? (
                       <Select
-                        // defaultValue={"Other"}
                         defaultValue={
                           authData.gender === "" ? "" : authData.gender
                         }
                         name="gender"
-                        // {...register("gender")}
-                        className=" w-[243px] lg:w-[289px] text-xl font-semibold lg:text-2xl h-12"
+                        className=" w-[215px] lg:w-[215px] text-xl font-semibold lg:text-2xl h-12"
                         onChange={onChangeGender}
                       >
                         <Option value="Male" className="text-xl">
@@ -712,14 +653,14 @@ const Account = () => {
                         <Option value="Other">Other</Option>
                       </Select>
                     ) : (
-                      <p className="bg-transparent h-6 outline-none text-xl lg:text-2xl">
+                      <p className="bg-transparent h-6 outline-none text-xl">
                         {authData?.gender}
                       </p>
                     )}
                   </div>
                 </div>
-                <div>
-                  <p className="text-[13px] lg:text-[18px] mb-2 font-medium text-gray-500">
+                <div className="  mb-4">
+                  <p className="text-[13px] mb-2 font-medium text-gray-500">
                     ADDRESS
                   </p>
 
@@ -727,92 +668,60 @@ const Account = () => {
                     <div>
                       <div className=" gap-2 flex">
                         <div>
-                          <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                          <p className="text-[13px] font-medium text-gray-500">
                             HOUSE / BUILDING NO
                           </p>
                           <input
                             placeholder="area"
-                            className=" h-12 rounded-md px-2 text-xl lg:text-2xl w-[243px] lg:w-[289px] border"
+                            className=" h-12 rounded-md px-2 text-xl w-[243px] lg:w-[289px] border"
                             type="text"
-                            // value={address.Area}
-                            // onChange={(e) =>
-                            //   setaddress({
-                            //     ...address,
-                            //     Area: e.target.value,
-                            //   })
-                            // }
                             {...register("address.Area")}
                           />
                         </div>
                         <div>
-                          <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                          <p className="text-[13px]  font-medium text-gray-500">
                             CITY
                           </p>
                           <input
                             placeholder="city"
-                            className=" h-12 w-[243px] text-xl lg:text-2xl rounded-md px-2 lg:w-[289px] border"
+                            className=" h-12 w-[243px] text-xl  rounded-md px-2 lg:w-[289px] border"
                             type="text"
-                            // value={address.city}
-                            // onChange={(e) =>
-                            //   setaddress({ ...address, city: e.target.value })
-                            // }
                             {...register("address.city")}
                           />
                         </div>
                       </div>
                       <div className="gap-2 flex mt-3 mb-3">
                         <div>
-                          <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                          <p className="text-[13px]  font-medium text-gray-500">
                             STATE
                           </p>
                           <input
                             placeholder=""
-                            className=" h-12 rounded-md px-2 text-xl lg:text-2xl w-[243px] lg:w-[289px] border"
+                            className=" h-12 rounded-md px-2 text-xl  w-[243px] lg:w-[289px] border"
                             type="text"
-                            // value={address.state}
-                            // onChange={(e) =>
-                            //   setaddress({ ...address, state: e.target.value })
-                            // }
                             {...register("address.state")}
                           />
                         </div>
                         <div>
-                          <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
+                          <p className="text-[13px]  font-medium text-gray-500">
                             PINCODE
                           </p>
                           <input
                             placeholder=""
-                            className=" h-12 rounded-md px-2 text-xl lg:text-2xl w-[243px] lg:w-[289px] border"
+                            className=" h-12 rounded-md px-2 text-xl  w-[243px] lg:w-[289px] border"
                             type="text"
-                            // value={address.pincode}
-                            // onChange={(e) =>
-                            //   setaddress({
-                            //     ...address,
-                            //     pincode: e.target.value,
-                            //   })
-                            // }
                             {...register("address.pincode")}
                           />
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <p className="text-xl lg:text-2xl mb-4 h-8">
+                    <p className="text-xl mb-4 h-8">
                       {authData.address.Area}, {authData.address.city},{" "}
                       {authData.address.state} :-
                       {authData.address.pincode}, {authData.address.county}
                     </p>
                   )}
-
-                  {/* <textarea
-                    disabled={isEdit ? false : true}
-                    type="text"
-                    value="Samrat ashok nagar, vile parle east, mumbai, maharashtra 400099"
-                    className={`${
-                      isEdit ? "border p-2 rounded-md" : ""
-                    } bg-transparent outline-none w-full h-20 text-xl lg:text-2xl`}
-                  /> */}
-                  {/* <p></p> */}
                 </div>
                 <div className=" mt-[-8px]">
                   {isEdit ? (
@@ -824,7 +733,6 @@ const Account = () => {
                         CANCEL
                       </button>
                       <button
-                        // onClick={() => setisEdit(false)}
                         type="submit"
                         className=" uppercase bg-orange-500 w-[130px] lg:w-[150px] h-12 text-[16px] lg:text-[18px] text-white font-semibold px-2 rounded-md"
                       >
