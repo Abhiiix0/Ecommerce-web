@@ -579,7 +579,7 @@ const Navbar = () => {
                     <a href="#">Track Order</a>
                   </li>
                   <li className=" font-normal text-[16px] ">
-                    <a href="#">Store Locator</a>
+                    <NavLink to="/store-locator">Store Locations</NavLink>{" "}
                   </li>
                   <li className=" font-normal text-[16px]">
                     <NavLink to="/contact">Contact Us</NavLink>
