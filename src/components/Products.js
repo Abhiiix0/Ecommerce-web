@@ -5,6 +5,7 @@ import { addToCart } from "../ReduxApi/AddToCart";
 import { Button } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 const Products = ({ data, type }) => {
+  console.log("ppp", data);
   const dispatch = useDispatch();
 
   const handeladdcart = (item) => {
@@ -16,7 +17,7 @@ const Products = ({ data, type }) => {
         <div className=" relative w-full flex flex-col justify-end   items-center rounded-md h-fit sm:h-fit">
           <div className="  w-fit h-fit">
             <img
-              src={data.images}
+              src={data.images[0]}
               className=" p-7  sm:p-2 relative transition-all duration-150 easy-linear sm:rounded-md sm:group-hover:w-fit group-hover:rounded-none"
               alt=""
             />

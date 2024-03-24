@@ -43,7 +43,7 @@ const Account = () => {
   const [userGender, setuserGender] = useState();
   const [userDOB, setuserDOB] = useState();
   const [address, setaddress] = useState({
-    Area: "",
+    building_no: "",
     city: "",
     state: "",
     pincode: "",
@@ -54,7 +54,7 @@ const Account = () => {
   const [userGender2, setuserGender2] = useState();
   const [userDOB2, setuserDOB2] = useState();
   const [address2, setaddress2] = useState({
-    area: "",
+    building_no: "",
     city: "",
     state: "",
     pincode: "",
@@ -114,6 +114,7 @@ const Account = () => {
       ...value,
       gender: userGender,
       dob: userDOB,
+      address: [address],
     };
     console.log("data bheja maine", userData);
     // const res = fetch("")
@@ -136,8 +137,8 @@ const Account = () => {
         content: data.message,
       });
     }
-    console.log("after update data coming from auth local storage", userData);
-    // console.log("after update", userData.gender);
+    console.log("after update", userData);
+    console.log("after update", userData.gender);
 
     // console.log(data);
   };
@@ -580,287 +581,6 @@ const Account = () => {
             </div>
           </div>
         </Drawer>
-
-        <div className=" pt-6 hidden md:block w-full">
-          <div className={`${profile ? "" : "hidden"} h-full`}>
-            <div className="flex flex-col gap-4">
-              <div>
-                <p className=" lg:text-3xl  text-2xl font-semibold">
-                  My Profile
-                </p>
-                <p className=" text-gray-500 mt-1">
-                  You can edit/update your profile information by click on edit
-                  profile button.
-                </p>
-              </div>
-              <form
-                onSubmit={handleSubmit(HandelUsserData)}
-                className=" flex flex-col gap-3"
-              >
-                <div className=" flex w-full gap-2">
-                  <div>
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                      FUll NAME
-                    </p>
-                    <input
-                      type="text"
-                      disabled={isEdit ? false : true}
-                      // value={userData.name}
-                      // onChange={(e) => HandelUsserData("name", e.target.value)}
-                      {...register("name")}
-                      className={`${
-                        isEdit ? "border p-2 rounded-md" : ""
-                      } bg-transparent outline-none text-xl lg:text-2xl`}
-                    />
-                  </div>
-                  <div>
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                      EMAIL
-                    </p>
-                    <input
-                      type="text"
-                      {...register("email")}
-                      disabled={isEdit ? false : true}
-                      className={`${
-                        isEdit ? "border p-2 rounded-md" : ""
-                      } bg-transparent w-[380px] outline-none text-xl lg:text-2xl`}
-                    />
-                  </div>
-                </div>
-                <div className=" flex w-full gap-2 ">
-                  <div className=" ">
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                      PHONE NUMBER
-                    </p>
-                    <input
-                      type="text"
-                      disabled={isEdit ? false : true}
-                      {...register("phone")}
-                      className={`${
-                        isEdit ? "border p-2 rounded-md" : ""
-                      } bg-transparent outline-none text-xl lg:text-2xl`}
-                    />
-                  </div>
-                  <div className="">
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                      ALTERNATIVE NUMBER
-                    </p>
-                    <input
-                      type="text"
-                      disabled={isEdit ? false : true}
-                      {...register("phone")}
-                      className={`${
-                        isEdit ? "border p-2 rounded-md" : ""
-                      } bg-transparent outline-none text-xl lg:text-2xl`}
-                    />
-                  </div>
-                </div>
-                <div className=" flex w-full gap-4">
-                  <div className=" w-[235px]  lg:w-[280px]">
-                    <p className="text-[13px] h-6 lg:text-[15px] font-medium text-gray-500">
-                      DATE OF BIRTH
-                    </p>
-
-                    {isEdit ? (
-                      <DatePicker
-                        defaultValue={dayjs(
-                          userData?.dob === null
-                            ? ""
-                            : userData?.dob.slice(0, 10)
-                        )}
-                        format={dateFormat}
-                        className="w-[243px] lg:w-[289px] text-xl font-semibold lg:text-2xl h-12"
-                        onChange={onChange}
-                        style={{ fontSize: "20px" }}
-                      />
-                    ) : (
-                      // <input
-                      //   type="text"
-                      //   disabled
-                      //   value="28/05/2003"
-                      //   className={`${
-                      //     isEdit ? "border p-2 rounded-md" : ""
-                      //   } bg-transparent outline-none text-xl lg:text-2xl`}
-                      // />
-                      <p className=" text-xl lg:text-2xl">
-                        {userData?.dob === null
-                          ? ""
-                          : userData?.dob.slice(0, 10)}
-                      </p>
-                    )}
-                  </div>
-                  <div className=" w-64">
-                    <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                      GENDER
-                    </p>
-                    {isEdit ? (
-                      <Select
-                        // defaultValue={"Other"}
-                        defaultValue={userData.gender || ""}
-                        name="gender"
-                        // {...register("gender")}
-                        className=" w-[243px] lg:w-[289px] text-xl font-semibold lg:text-2xl h-12"
-                        onChange={onChangeGender}
-                      >
-                        <Option value="Male" className="text-xl">
-                          Male
-                        </Option>
-                        <Option value="Female">Female</Option>
-                        <Option value="Other">Other</Option>
-                      </Select>
-                    ) : (
-                      <p className="bg-transparent h-6 outline-none text-xl lg:text-2xl">
-                        {userData?.gender}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-[13px] lg:text-[18px] mb-2 font-medium text-gray-500">
-                    ADDRESS
-                  </p>
-
-                  {isEdit ? (
-                    <div>
-                      <div className=" gap-2 flex">
-                        <div>
-                          <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                            HOUSE / BUILDING NO
-                          </p>
-                          <input
-                            placeholder="area"
-                            className=" h-12 rounded-md px-2 text-xl lg:text-2xl w-[243px] lg:w-[289px] border"
-                            type="text"
-                            // value={address.Area}
-                            // onChange={(e) =>
-                            //   setaddress({
-                            //     ...address,
-                            //     Area: e.target.value,
-                            //   })
-                            // }
-                            {...register("address.Area")}
-                          />
-                        </div>
-                        <div>
-                          <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                            CITY
-                          </p>
-                          <input
-                            placeholder="city"
-                            className=" h-12 w-[243px] text-xl lg:text-2xl rounded-md px-2 lg:w-[289px] border"
-                            type="text"
-                            // value={address.city}
-                            // onChange={(e) =>
-                            //   setaddress({ ...address, city: e.target.value })
-                            // }
-                            {...register("address.city")}
-                          />
-                        </div>
-                      </div>
-                      <div className="gap-2 flex mt-3 mb-3">
-                        <div>
-                          <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                            STATE
-                          </p>
-                          <input
-                            placeholder=""
-                            className=" h-12 rounded-md px-2 text-xl lg:text-2xl w-[243px] lg:w-[289px] border"
-                            type="text"
-                            // value={address.state}
-                            // onChange={(e) =>
-                            //   setaddress({ ...address, state: e.target.value })
-                            // }
-                            {...register("address.state")}
-                          />
-                        </div>
-                        <div>
-                          <p className="text-[13px] lg:text-[15px] font-medium text-gray-500">
-                            PINCODE
-                          </p>
-                          <input
-                            placeholder=""
-                            className=" h-12 rounded-md px-2 text-xl lg:text-2xl w-[243px] lg:w-[289px] border"
-                            type="text"
-                            // value={address.pincode}
-                            // onChange={(e) =>
-                            //   setaddress({
-                            //     ...address,
-                            //     pincode: e.target.value,
-                            //   })
-                            // }
-                            {...register("address.pincode")}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="text-xl lg:text-2xl mb-4 h-8">
-                      {authData.address.Area}, {authData.address.city},{" "}
-                      {authData.address.state} :-
-                      {authData.address.pincode}, {authData.address.county}
-                    </p>
-                  )}
-
-                  {/* <textarea
-                    disabled={isEdit ? false : true}
-                    type="text"
-                    value="Samrat ashok nagar, vile parle east, mumbai, maharashtra 400099"
-                    className={`${
-                      isEdit ? "border p-2 rounded-md" : ""
-                    } bg-transparent outline-none w-full h-20 text-xl lg:text-2xl`}
-                  /> */}
-                  {/* <p></p> */}
-                </div>
-                <div className=" mt-[-8px]">
-                  {isEdit ? (
-                    <div className=" flex gap-3">
-                      <button
-                        onClick={() => setisEdit(false)}
-                        className=" uppercase bg-orange-500 w-[130px] lg:w-[150px] h-12 text-[16px] lg:text-[18px] text-white font-semibold px-2 rounded-md"
-                      >
-                        CANCEL
-                      </button>
-                      <button
-                        // onClick={() => setisEdit(false)}
-                        type="submit"
-                        className=" uppercase bg-orange-500 w-[130px] lg:w-[150px] h-12 text-[16px] lg:text-[18px] text-white font-semibold px-2 rounded-md"
-                      >
-                        SAVE
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setisEdit(true)}
-                      className="uppercase bg-orange-500 w-[130px] lg:w-[150px] h-12 text-white text-[16px] lg:text-[18px] font-semibold px-2 rounded-md"
-                    >
-                      Edit Profile
-                    </button>
-                  )}
-                </div>
-              </form>
-            </div>
-          </div>
-          <div className={`${orders ? "" : "hidden"} h-full`}>
-            <div>
-              <p className=" lg:text-3xl  text-2xl font-semibold">My Orders</p>
-              <p className=" text-gray-500 mt-1">
-                You can edit/update your profile information by click on edit
-                profile button.
-              </p>
-            </div>
-          </div>
-          <div className={`${wishlist ? "" : "hidden"} h-full`}>
-            <div>
-              <p className=" lg:text-3xl  text-2xl font-semibold">
-                My Wishlist
-              </p>
-              <p className=" text-gray-500 mt-1">
-                You can edit/update your profile information by click on edit
-                profile button.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

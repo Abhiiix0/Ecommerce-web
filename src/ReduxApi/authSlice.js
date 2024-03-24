@@ -1,6 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 let storedUser = JSON.parse(localStorage.getItem("auth")) || null;
+
+// useEffect(() => {
+
+//   return () => {
+//     second
+//   }
+// }, [third])
+
 console.log("hii", storedUser);
 let initialState = {
   currentUser: storedUser ? storedUser.user : {},
@@ -18,6 +27,13 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem("auth", JSON.stringify(action.payload));
     },
+    setUser: (state, action) => {
+      state.currentUser = action.payload.user;
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({ ...storedUser, user: action.payload.user })
+      );
+    },
     logout: (state) => {
       // const navigate = useNavigate();
       state.currentUser = null;
@@ -28,5 +44,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCurrentUser, logout } = authSlice.actions;
+export const { setCurrentUser, logout, setUser } = authSlice.actions;
 export default authSlice.reducer;

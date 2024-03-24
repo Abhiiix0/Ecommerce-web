@@ -87,7 +87,7 @@ const Cart = () => {
                         <div className=" shadow hover:shadow-lg rounded-sm  flex items-center p-2 ">
                           <img
                             className="h-[70px] sm:h-28"
-                            src={products.images}
+                            src={products.images[0]}
                             alt=""
                           />
                           <div className=" w-full">

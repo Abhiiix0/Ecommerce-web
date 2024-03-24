@@ -22,6 +22,7 @@ const PrivateUser = () => {
       console.log("response", res);
       if (res.ok) {
         setok(true);
+        console.log("res", res.json());
         navigate("account");
       } else {
         setok(false);

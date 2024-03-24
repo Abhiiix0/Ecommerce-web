@@ -23,6 +23,7 @@ import { totalItems } from "../ReduxApi/AddToCart";
 import { logout } from "../ReduxApi/authSlice";
 // import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../ReduxApi/authSlice";
+import { loginAPi, RegisterAPi } from "../apis/Api";
 const Navbar = () => {
   const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
   const cartItem = useSelector((state) => state.cart.cartItem);
+  // const token = useSelector((state) => state.auth.token);
 
   console.log(cartItem);
   function totalcart() {
@@ -58,17 +60,9 @@ const Navbar = () => {
   console.log(isAuthenticated);
 
   const onRegistersubmit = async (value) => {
+    console.log(value);
     try {
-      const response = await fetch(
-        "https://finalyeartyproject-production.up.railway.app/api/v1/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(value),
-        }
-      );
+      const response = await RegisterAPi(value);
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -76,11 +70,14 @@ const Navbar = () => {
 
       const data = await response.json();
       if (data.success === true) {
+        setLR(!LR);
+        setshowPass(false);
         messageApi.open({
           type: "success",
           content: data.message,
         });
         console.log(data);
+        reset();
       }
       if (data.success === false) {
         messageApi.open({
@@ -105,22 +102,14 @@ const Navbar = () => {
   };
   const onLoginsubmit = async (value) => {
     try {
-      const response = await fetch(
-        "https://finalyeartyproject-production.up.railway.app/api/v1/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(value),
-        }
-      );
+      const response = await loginAPi(value);
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
+      console.log(response);
       const data = await response.json();
+      console.log("resLogin", data);
       // if (data.success) {
       //   setInterval(() => {
       //     setLR(true);
@@ -138,6 +127,7 @@ const Navbar = () => {
         dispatch(setCurrentUser(data));
         setisopen(false);
         console.log(data);
+        reset();
       }
       if (data.success === false) {
         messageApi.open({
@@ -149,6 +139,10 @@ const Navbar = () => {
       console.log("Success:", data);
     } catch (error) {
       console.error("Error:", error);
+      messageApi.open({
+        type: "error",
+        content: error.message,
+      });
     }
     // console.log(value);
   };
