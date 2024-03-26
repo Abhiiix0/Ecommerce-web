@@ -37,3 +37,7 @@ export const getAllProducts = () => {
     "https://finalyeartyproject-production.up.railway.app/api/v1/product/get-product"
   );
 };
+
+export const GetSingleProduct = (slug) => {
+  return fetch(`${baseurl}/api/v1/product/get-single-product/${slug}`);
+};
