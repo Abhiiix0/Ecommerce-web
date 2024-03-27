@@ -13,7 +13,7 @@ const Products = ({ data, type }) => {
   };
   return (
     <>
-      <div className="group shadow  border  w-[48%] sm:w-[280px] rounded-md   hover:shadow-lg cursor-pointer h-fit ">
+      <div className="group shadow  border  w-[42%] sm:w-[280px] rounded-md   hover:shadow-lg cursor-pointer h-fit ">
         <div className=" relative w-full flex flex-col justify-end   items-center rounded-md h-fit sm:h-fit">
           <div className="  w-fit h-fit">
             <img
