@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { resetWarned } from "antd/es/_util/warning";
 import { getAllProducts } from "../apis/Api";
 import { Option } from "@mui/base";
+import { Link, NavLink } from "react-router-dom";
 // import { Filter } from "@mui/icons-material";
 
 const Store = () => {
@@ -34,35 +35,6 @@ const Store = () => {
   };
 
   const { register, handleSubmit, reset, resetField } = useForm();
-  // const onsubmit = async (value) => {
-  //   try {
-  //     const response = await fetch(
-  //       "https://finalyeartyproject-production.up.railway.app/api/v1/auth/register",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(value),
-  //       }
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-
-  //     const data = await response.json();
-  //     console.log("Success:", data);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  //   // console.log(value);
-  // };
-  // console.log(datas);
-
-  // const post = ()=>{
-
-  // }
 
   const handelPrice = (value) => {
     setFuilters({ ...Filter, priceRange: [value[0], value[1]] });
@@ -422,9 +394,13 @@ const Store = () => {
                     <Skeleton className="w-[48%]  md:w-[280px] pt-40 md:pt-48px-2 h-[300px] md:h-[350px] border rounded-md  shadow-md"></Skeleton>
                   </div>
                 )}
+                {/* <div className=" flex gap-2 flex-wrap"> */}
                 {filterProducts.map((item) => (
+                  // <NavLink className=" w-fit border overflow-hidden">
                   <Products data={item} type=""></Products>
+                  // </NavLink>
                 ))}
+                {/* </div> */}
                 {/* </div> */}
                 {filterProducts.length === 0 ? <p>No Product Found</p> : ""}
               </div>

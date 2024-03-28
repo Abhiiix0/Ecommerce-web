@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../ReduxApi/AddToCart";
 import { Button } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { NavLink } from "react-router-dom";
 const Products = ({ data, type }) => {
   console.log("ppp", data);
   const dispatch = useDispatch();
@@ -11,9 +12,17 @@ const Products = ({ data, type }) => {
   const handeladdcart = (item) => {
     dispatch(addToCart(item));
   };
+
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scrolls to the top of the page smoothly
+  };
   return (
     <>
-      <div className="group shadow  border  w-[48%] sm:w-[280px] rounded-md   hover:shadow-lg cursor-pointer h-fit ">
+      <NavLink
+        onClick={() => handleClick()}
+        to={`/products/${data.slug}`}
+        className="group shadow  border overflow-hidden  w-[48%] sm:w-[280px] rounded-md   hover:shadow-lg cursor-pointer h-fit "
+      >
         <div className=" relative w-full flex flex-col justify-end   items-center rounded-md h-fit sm:h-fit">
           <div className="  w-fit h-fit">
             <img
@@ -78,7 +87,7 @@ const Products = ({ data, type }) => {
             </div>
           </div>
         </div>
-      </div>
+      </NavLink>
     </>
   );
 };

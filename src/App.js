@@ -11,6 +11,7 @@ import PrivateUser from "./Routes/PrivateUser";
 import { message } from "antd";
 import About from "./Pages/About";
 import StoreLocator from "./Pages/StoreLocator";
+import ProductDetail from "./Pages/ProductDetail";
 const App = () => {
   const { contextHolder } = message.useMessage();
   return (
@@ -30,6 +31,8 @@ const App = () => {
 
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/store" element={<Store />}></Route>
+        <Route path="/products/:slug" element={<ProductDetail />} />
+        {/* <Route path="/analog" element={<Store data="analog" />}></Route> */}
       </Routes>
       <Footer />
     </>
