@@ -7,10 +7,18 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import { HeartOutlined, LockOutlined, SafetyOutlined } from "@ant-design/icons";
 import Icon from "@ant-design/icons/lib/components/Icon";
 import SimilarProducts from "../components/SimilarProducts";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../ReduxApi/AddToCart";
 const ProductDetail = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [visible, setVisible] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handeladdcart = (item) => {
+    dispatch(addToCart(item));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,14 +51,15 @@ const ProductDetail = () => {
       <div className=" flex justify-center h-fit  items-center ">
         <div className=" flex flex-col lg:flex-row w-full xl:w-[1200px] h-fit md:p-4 gap-3 xl:gap-6">
           <div>
-            <Image
-              // className=" h-[500px] w-[10rem] "
-              width="100%"
-              src={product.product.images[0]}
-              onClick={() => setVisible(true)}
-            />
-
-            {/* <div className=" hidden lg:block xl:hidden">
+            <div className=" hidden xl:block">
+              <Image
+                // className=" h-[500px] w-[10rem] "
+                width={500}
+                src={product.product.images[0]}
+                onClick={() => setVisible(true)}
+              />
+            </div>
+            <div className=" hidden lg:block xl:hidden">
               <Image
                 // className=" h-[500px] w-[10rem] "
                 width={400}
@@ -58,14 +67,14 @@ const ProductDetail = () => {
                 onClick={() => setVisible(true)}
               />
             </div>
-            <div className=" hidden md:block lg:hidden">
+            <div className=" block lg:hidden">
               <Image
                 // className=" h-[500px] w-[10rem] "
                 width="100%"
                 src={product.product.images[0]}
                 onClick={() => setVisible(true)}
               />
-            </div> */}
+            </div>
             <div
               style={{
                 display: "none",
@@ -119,10 +128,13 @@ const ProductDetail = () => {
             </div>
             <div>
               <div className=" flex mt-3 gap-3 mb-4 ">
-                <button className=" bg-orange-500  h-12 w-[calc(100%-48px)] px-2 rounded-md text-white font-semibold">
+                <button
+                  onClick={() => handeladdcart(product.product)}
+                  className=" bg-orange-500  h-12 w-[calc(100%-48px)] px-2 rounded-md text-white font-semibold"
+                >
                   Add to cart
                 </button>
-                <button className=" border-2 text-rahane  hover:bg-red-500  h-12 w-12 px-2 rounded-md  font-semibold">
+                <button className=" border-2 text-rahane   h-12 w-12 px-2 rounded-md  font-semibold">
                   <HeartOutlined
                     color="red"
                     size="lg"
@@ -216,7 +228,7 @@ const ProductDetail = () => {
           Similar Products
         </p>
         <div>
-          {/* <SimilarProducts similar={product?.product?.strapColor[0]} /> */}
+          <SimilarProducts similar={product?.product?.strapColor[0]} />
         </div>
       </div>
     </div>

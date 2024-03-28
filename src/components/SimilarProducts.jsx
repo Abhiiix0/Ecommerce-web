@@ -60,17 +60,12 @@ const SimilarProducts = (similar) => {
   return (
     <>
       <section className=" flex justify-center w-full">
-        <div className=" flex items-center flex-col w-[1250px]  px-3 lg:px-6">
-          <div className=" mt-5 sm:mt-6 w-full h-fit  flex justify-center border xl:justify-between flex-wrap  sm:gap-5">
+        <div className=" flex items-center flex-col max-w-[1250px]  px-3 lg:px-6">
+          <div className=" mt-5 sm:mt-6 w-full flex justify-between md:gap-6 gap-y-6 flex-wrap h-fit ">
             {/* <div className="h-80 w-64 bg-slate-400"></div> */}
+
             {first8Products?.map((items) => (
-              <Link
-                className=" m-0 p-0"
-                to={`/products/${items.slug}`}
-                onClick={() => handleClick()}
-              >
-                <Products data={items} type=""></Products>
-              </Link>
+              <Products data={items} type=""></Products>
             ))}
           </div>
         </div>
