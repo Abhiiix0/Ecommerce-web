@@ -8,7 +8,7 @@ import { products } from "../ProductsData";
 import { getAllProducts } from "../apis/Api";
 import { Link } from "react-router-dom";
 const SimilarProducts = (similar) => {
-  console.log(similar);
+  // console.log(similar);
   const [datas, setdatas] = useState();
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -21,16 +21,16 @@ const SimilarProducts = (similar) => {
     // setisloading(true);
     try {
       const res = await getAllProducts();
-      console.log(res);
+      // console.log(res);
       const data = await res.json();
       // console.log("datas", data.products);
-      console.log("aww", data);
+      // console.log("aww", data);
       // datas ? setdatas(data.products) : "";
       let similarrr = data.products.filter(
         (e) => e.dialcolor[0] === similar.similar
       );
 
-      console.log(similarrr);
+      // console.log(similarrr);
       setdatas(similarrr);
       // setisloading(false);
     } catch (error) {
@@ -56,7 +56,7 @@ const SimilarProducts = (similar) => {
     window.scrollTo({ top: 0, behavior: "smooth" }); // Scrolls to the top of the page smoothly
   };
   let first8Products = datas?.slice(0, 4);
-  console.log("first8Products", first8Products);
+  // console.log("first8Products", first8Products);
   return (
     <>
       <section className=" flex justify-center w-full">

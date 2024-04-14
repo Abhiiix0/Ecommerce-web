@@ -12,6 +12,8 @@ import { message } from "antd";
 import About from "./Pages/About";
 import StoreLocator from "./Pages/StoreLocator";
 import ProductDetail from "./Pages/ProductDetail";
+import CheckOut from "./Pages/CheckOut";
+import PaymentSucessful from "./Pages/PaymentSucessful";
 const App = () => {
   const { contextHolder } = message.useMessage();
   return (
@@ -31,6 +33,10 @@ const App = () => {
 
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/store" element={<Store />}></Route>
+        <Route path="/checkout" element={<CheckOut />}></Route>
+
+        <Route path="/verify-order" element={<PaymentSucessful />}></Route>
+
         <Route path="/products/:slug" element={<ProductDetail />} />
         {/* <Route path="/analog" element={<Store data="analog" />}></Route> */}
       </Routes>

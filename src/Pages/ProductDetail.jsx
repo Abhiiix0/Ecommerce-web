@@ -1,35 +1,70 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { GetSingleProduct } from "../apis/Api";
-import { Button, Image } from "antd";
+import { Button, Image, message } from "antd";
 import LockIcon from "@mui/icons-material/Lock";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { HeartOutlined, LockOutlined, SafetyOutlined } from "@ant-design/icons";
 import Icon from "@ant-design/icons/lib/components/Icon";
 import SimilarProducts from "../components/SimilarProducts";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../ReduxApi/AddToCart";
+import { Token } from "@mui/icons-material";
+import { addToCartController } from "../apis/Api";
+import { addTocartProducts } from "../ReduxApi/authSlice";
 const ProductDetail = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [visible, setVisible] = useState(false);
+  const token = useSelector((state) => state.auth.token);
 
   const dispatch = useDispatch();
 
-  const handeladdcart = (item) => {
-    dispatch(addToCart(item));
+  const handeladdcart = async (item) => {
+    try {
+      const dataa = {
+        productId: item,
+        auantity: 1,
+      };
+      console.log(item, token);
+
+      const res = await addToCartController(dataa, token);
+      const data = await res.json();
+
+      if (data.success) {
+        console.log("cart api", data);
+        message.open({
+          type: "success",
+          content: data.message,
+        });
+        dispatch(addToCart(data));
+      } else {
+        console.log("cart api", data);
+        message.open({
+          type: "error",
+          content: data.message,
+        });
+        // dispatch(addToCart(data));
+      }
+    } catch (error) {
+      message.open({
+        type: "error",
+        content: error,
+      });
+      console.log("err", error);
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await GetSingleProduct(slug); // Assuming your API endpoint is '/api/products/:slug'
-        console.log("data", response);
+        // console.log("data", response);
         if (!response.ok) {
           throw new Error("Failed to fetch product");
         }
         const data = await response.json();
-        console.log("data", data);
+        // console.log("data", data);
         setProduct(data);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -129,7 +164,7 @@ const ProductDetail = () => {
             <div>
               <div className=" flex mt-3 gap-3 mb-4 ">
                 <button
-                  onClick={() => handeladdcart(product.product)}
+                  onClick={() => handeladdcart(product.product._id)}
                   className=" bg-orange-500  h-12 w-[calc(100%-48px)] px-2 rounded-md text-white font-semibold"
                 >
                   Add to cart
