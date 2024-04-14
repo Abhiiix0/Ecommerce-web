@@ -6,7 +6,7 @@ import { Button } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 const Products = ({ data, type }) => {
-  console.log("ppp", data);
+  // console.log("ppp", data);
   const dispatch = useDispatch();
 
   const handeladdcart = (item) => {

@@ -19,14 +19,15 @@ import { useForm } from "react-hook-form";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 
 import { useSelector, useDispatch } from "react-redux";
-import { totalItems } from "../ReduxApi/AddToCart";
+import { CartSet, logoutCart, totalItems } from "../ReduxApi/AddToCart";
 import { logout } from "../ReduxApi/authSlice";
 // import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../ReduxApi/authSlice";
 import { loginAPi, RegisterAPi } from "../apis/Api";
+import ForgetPassword from "./ForgetPassword";
 const Navbar = () => {
   const navigate = useNavigate();
-
+  const [FHide, setFHide] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const { register, handleSubmit, reset } = useForm();
   const cartItemssss = useSelector((state) => state.cart);
@@ -38,25 +39,22 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
   const cartItem = useSelector((state) => state.cart.cartItem);
-  // const token = useSelector((state) => state.auth.token);
+  const auth = useSelector((state) => state.auth);
 
-  console.log(cartItem);
-  function totalcart() {
-    dispatch(totalItems());
-  }
+  // const token = useSelector((state) => state.auth.token);
 
   function logoutt() {
     reset();
     dispatch(logout());
+    dispatch(logoutCart());
+    // dispatch(cartLogout());
 
     navigate("/");
   }
-  useEffect(() => {
-    totalcart();
-  }, [cartItemssss]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const CurrentUser = useSelector((state) => state.auth.currentUser);
+  const CurrentUser = useSelector((state) => state.auth);
+  console.log("authsjj", CurrentUser);
   console.log(isAuthenticated);
 
   const onRegistersubmit = async (value) => {
@@ -125,6 +123,7 @@ const Navbar = () => {
           content: data.message,
         });
         dispatch(setCurrentUser(data));
+        dispatch(CartSet(data));
         setisopen(false);
         console.log(data);
         reset();
@@ -186,10 +185,18 @@ const Navbar = () => {
       key: "3",
     },
   ];
+
+  const notcartopen = () => {
+    message.open({
+      type: "error",
+      content: "please login to access this page",
+    });
+  };
   return (
     <>
       {contextHolder}
       <section className="relative">
+        <ForgetPassword setFHide={setFHide} FHide={FHide}></ForgetPassword>
         <header
           // style={{ display: stickyclass ? "none" : "" }}
           className=" hidden text-center lg:flex items-center justify-end pr-5 h-7 text-[12px] border-b-2 border-gray-300"
@@ -217,7 +224,7 @@ const Navbar = () => {
                   className=" cursor-pointer  w-fit px-4 "
                 >
                   <UserOutlined className="mr-1" />
-                  {CurrentUser.name}
+                  {CurrentUser.currentUser.name}
                   <DownOutlined className=" ml-3" />
                 </a>
               </Dropdown>
@@ -294,7 +301,15 @@ const Navbar = () => {
                         {/* <input type="" name="" id="" /> */}
                         <label htmlFor="showP">Show Password</label>
                       </div>
-                      <p>Forget Password?</p>
+                      <p
+                        onClick={() => {
+                          setFHide(true);
+                          setisopen(false);
+                        }}
+                        className=" cursor-pointer"
+                      >
+                        Forget Password?
+                      </p>
                     </div>
 
                     <button
@@ -514,7 +529,10 @@ const Navbar = () => {
                   </a>
                 </li>
                 <li>
-                  <NavLink to="/cart" className=" relative  ">
+                  <NavLink
+                    to={isAuthenticated ? "/cart" : ""}
+                    className=" relative"
+                  >
                     <Badge
                       count={cartItem}
                       size="small"
