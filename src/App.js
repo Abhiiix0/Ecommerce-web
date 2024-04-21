@@ -14,6 +14,7 @@ import StoreLocator from "./Pages/StoreLocator";
 import ProductDetail from "./Pages/ProductDetail";
 import CheckOut from "./Pages/CheckOut";
 import PaymentSucessful from "./Pages/PaymentSucessful";
+import WishListPage from "./Pages/WishListPage";
 const App = () => {
   const { contextHolder } = message.useMessage();
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/" element={<Home />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/store-locator" element={<StoreLocator />}></Route>
+        <Route path="/wishlist" element={<WishListPage />}></Route>
 
         <Route path="/user" element={<PrivateUser />}>
           <Route path="account" element={<Account />}></Route>

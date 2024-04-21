@@ -165,17 +165,17 @@ const ProductDetail = () => {
               <div className=" flex mt-3 gap-3 mb-4 ">
                 <button
                   onClick={() => handeladdcart(product.product._id)}
-                  className=" bg-orange-500  h-12 w-[calc(100%-48px)] px-2 rounded-md text-white font-semibold"
+                  className=" bg-orange-500  h-12 w-full text-lg px-2 rounded-md text-white font-semibold"
                 >
                   Add to cart
                 </button>
-                <button className=" border-2 text-rahane   h-12 w-12 px-2 rounded-md  font-semibold">
+                {/* <button className=" border-2 text-rahane   h-12 w-12 px-2 rounded-md  font-semibold">
                   <HeartOutlined
                     color="red"
                     size="lg"
                     className=" border-red-400"
                   />
-                </button>
+                </button> */}
               </div>
               <div className=" text-gray-600 text-16 flex flex-col gap-1 ">
                 <p>
@@ -244,7 +244,7 @@ const ProductDetail = () => {
           </span>
           <span>
             <p className=" font-semibold text-gray-400 uppercase text-[14px] md:text-[16px]">
-              Dial Color
+              Strap Color
             </p>
             <p className=" text-[13px] md:text-[15px] font-semibold">
               {product.product.strapColor[0]}

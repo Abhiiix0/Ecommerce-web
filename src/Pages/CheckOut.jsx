@@ -2,8 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { totalItems } from "../ReduxApi/AddToCart";
 import {
-  totalPrice,
-  removeItem,
+  CartSet,
   IncreaseItemQty,
   DecreaseItemQty,
 } from "../ReduxApi/AddToCart";
@@ -14,40 +13,62 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
+// import { Receipt } from "@mui/icons-material";
 const CheckOut = () => {
   const [AddressHide, setAddressHide] = useState(false);
   const [ItemsHide, setItemsHide] = useState(false);
   const carts = useSelector((state) => state.cart.cart);
   const auth = useSelector((state) => state.auth);
-
+  const cartID = useSelector((state) => state.cart.cartID);
   const totalItems = useSelector((state) => state.cart.cartItem);
   const totalCartPrice = useSelector((state) => state.cart.cartPrice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const setcartfromOrder = (value) => {
+    const payload = {
+      cartId: cartID,
+      cartItems: value.items,
+      totalCartItem: value.totalCartItem,
+      totalCartValue: value.totalCartValue,
+    };
+    dispatch(CartSet(value));
+  };
   const handlePayment = async (amount) => {
     try {
       // Load Razorpay script dynamically
       //   await loadScript("https://checkout.razorpay.com/v1/checkout.js");
       //   const amount = 500;
-      console.log("jidf", amount * 100);
+      console.log("jidf", totalCartPrice * 100);
+      const option = {
+        amount: amount * 100,
+        currency: "INR",
+        receipt: "sdsd",
+      };
+      const cartId = cartID;
       // Make API call to initiate payment
       const response = await fetch(
-        "http://localhost:5000/api/v1/auth/create-order",
+        "https://finalyeartyproject-production.up.railway.app/api/v1/auth/create-rozarpay-order",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            amount,
+            cartId: cartId,
+            option: option,
             // Include any necessary data for creating the order
           }),
         }
       );
-      // const dataa =await response.json()
-      console.log("response", response);
+      console.log("res order", response);
+      const data = await response.json();
 
+      console.log("data", data);
+      // const { order, payment, sig } = response.data;
+      // console.log(order, payment, sig);
+      //
       if (!response.ok) {
         throw new Error("Failed to initiate payment");
       }
@@ -56,13 +77,60 @@ const CheckOut = () => {
       // Initialize Razorpay
       const razorpayOptions = {
         key: "rzp_test_raNMlh9GYX3QXF", // Replace with your Razorpay Key ID
-        amount: amount * 500, // Example: 100 (amount in paisa)
+        amount: totalCartPrice, // Example: 100 (amount in paisa)
         currency: "INR", // Example: 'INR'
         name: "GoodTimes",
         description: "Payment for your order",
-        order_id: response.id,
-        callback_url: "/verify-order",
-
+        order_id: data.order.id,
+        handler: async function (response) {
+          console.log(response);
+          const body = { ...response };
+          try {
+            const verifyPayment = await fetch(
+              "https://finalyeartyproject-production.up.railway.app/api/v1/auth/verify-order",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+              }
+            );
+            const verify = await verifyPayment.json();
+            console.log(verify);
+            if (verify.success) {
+              const res = await fetch(
+                "https://finalyeartyproject-production.up.railway.app/api/v1/auth/create-order",
+                {
+                  method: "POST",
+                  headers: {
+                    Authorization: auth.token,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    cartId: cartID,
+                    razorpay_order_id: verify.orderId,
+                    razorpay_payment_id: verify.paymentId,
+                  }),
+                }
+              );
+              const datass = await res.json();
+              setcartfromOrder(datass.updatedCart);
+              console.log("order verify", datass);
+              message.open({
+                title: "success",
+                content: verify.message,
+              });
+            }
+          } catch (error) {
+            console.log("errrrr", error);
+            message.open({
+              title: "error",
+              content: error.message,
+            });
+          }
+        },
+        // callback_url: "/verify-order",
         prefill: {
           name: auth.currentUser.name,
           email: auth.currentUser.email,
@@ -139,10 +207,11 @@ const CheckOut = () => {
                 <p
                   className={`${AddressHide ? "hidden" : ""} p-5 bg-slate-100`}
                 >
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Sequi temporibus accusantium quaerat repellendus voluptatibus
-                  debitis. Quaerat harum enim, atque aut veniam aspernatur quam
-                  illum necessitatibus!
+                  {auth.currentUser.address.Area},{" "}
+                  {auth.currentUser.address.city},{" "}
+                  {auth.currentUser.address.state} :-
+                  {auth.currentUser.address.pincode},{" "}
+                  {auth.currentUser.address.county}
                 </p>
               </div>
 
@@ -269,7 +338,7 @@ const CheckOut = () => {
                   </p>
                 </div>
                 <button
-                  onClick={() => handlePayment(500)}
+                  onClick={() => handlePayment(totalCartPrice)}
                   className=" w-full border py-2 rounded-md bg-orange-600 hover:bg-orange-700 transition-all duration-100 ease-linear text-white tracking-wider"
                 >
                   Payment

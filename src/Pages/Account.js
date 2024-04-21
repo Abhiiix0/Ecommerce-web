@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../ReduxApi/authSlice";
+import { logout, setUser } from "../ReduxApi/authSlice";
 import { Controller, useForm } from "react-hook-form";
-import { Drawer, Modal, DatePicker, message, Select } from "antd";
-import { LeftCircleFilled, RightCircleFilled } from "@ant-design/icons";
+import { Drawer, Modal, DatePicker, message, Select, Table } from "antd";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  LeftCircleFilled,
+  RightCircleFilled,
+} from "@ant-design/icons";
 import dayjs from "dayjs";
 import buddhistEra from "dayjs/plugin/buddhistEra";
-import { UserDataUpate } from "../apis/Api";
+import { UserDataUpate, getAllUserOrder } from "../apis/Api";
+import OrderDetails from "../components/OrderDetails";
+import { logoutCart } from "../ReduxApi/AddToCart";
+import { useNavigate } from "react-router-dom";
 const Account = () => {
   const authData = useSelector((state) => state.auth.currentUser);
-
+  const navigate = useNavigate();
   console.log("authData", authData);
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
@@ -42,7 +50,10 @@ const Account = () => {
   const [ordersD, setordersD] = useState(false);
   const [userGender, setuserGender] = useState();
   const [userDOB, setuserDOB] = useState();
+  const [AllOrder, setAllOrder] = useState([]);
 
+  const [orderhide, setorderhide] = useState(false);
+  const [orderdata, setorderdata] = useState();
   // for small display
   const [userGender2, setuserGender2] = useState();
   const [userDOB2, setuserDOB2] = useState();
@@ -149,12 +160,238 @@ const Account = () => {
     console.log(Gender);
     setuserGender2(Gender);
   };
+
+  const getAllOrders = async () => {
+    try {
+      const res = await getAllUserOrder(authData._id, token);
+      const data = await res.json();
+      console.log("orders", data);
+      if (data.success) {
+        setAllOrder(data.orders);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllOrders();
+  }, []);
+
   const { Option } = Select;
   const genderSelect = ["Male", "Female", "Other"];
+
+  const columnss = [
+    {
+      title: "NO",
+      dataIndex: "no",
+      key: "No",
+      render: (_, render, i) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {i + 1}
+          </div>
+        );
+      },
+    },
+    {
+      title: "ID",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_, render, i) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {render._id}
+          </div>
+        );
+      },
+    },
+    {
+      title: "PAYMENT",
+      dataIndex: "paymentDone",
+      key: "paymentDone",
+      render: (_, render) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {render.paymentDone ? (
+              <p className=" bg-green-700 w-5 h-5 p-3 grid place-content-center rounded-full">
+                {" "}
+                <CheckOutlined style={{ color: "white" }} />{" "}
+              </p>
+            ) : (
+              <p className=" bg-red-700 w-4 h-4 grid place-content-center rounded-full">
+                <CloseOutlined style={{ color: "white" }} />
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: "STATUS",
+      dataIndex: "orderStatus",
+      key: "orderStatus",
+      render: (_, render, i) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {render.orderStatus}
+          </div>
+        );
+      },
+    },
+
+    {
+      title: "QTY",
+      dataIndex: "items",
+      key: "orderStatus",
+      render: (_, render) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {render.items.length}
+          </div>
+        );
+      },
+    },
+
+    {
+      title: "RS",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
+      render: (_, render) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            ₹{render.totalAmount}
+          </div>
+        );
+      },
+    },
+  ];
+  const columnss2 = [
+    {
+      title: "NO",
+      dataIndex: "no",
+      key: "No",
+      render: (_, render, i) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {i + 1}
+          </div>
+        );
+      },
+    },
+    {
+      title: "ID",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_, render, i) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {render._id}
+          </div>
+        );
+      },
+    },
+    {
+      title: "PAYMENT",
+      dataIndex: "paymentDone",
+      key: "paymentDone",
+      render: (_, render) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {render.paymentDone ? (
+              <p className=" bg-green-700 w-5 h-5 p-3 grid place-content-center rounded-full">
+                {" "}
+                <CheckOutlined style={{ color: "white" }} />{" "}
+              </p>
+            ) : (
+              <p className=" bg-red-700 w-4 h-4 grid place-content-center rounded-full">
+                <CloseOutlined style={{ color: "white" }} />
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: "STATUS",
+      dataIndex: "orderStatus",
+      key: "orderStatus",
+      render: (_, render, i) => {
+        return (
+          <div
+            onClick={() => {
+              setorderdata(render);
+              setorderhide(true);
+            }}
+          >
+            {render.orderStatus}
+          </div>
+        );
+      },
+    },
+  ];
+
+  function logoutt() {
+    reset();
+    dispatch(logout());
+    dispatch(logoutCart());
+    // dispatch(cartLogout());
+
+    navigate("/");
+  }
   return (
     <div>
       {contextHolder}
-
+      <OrderDetails
+        open={orderhide}
+        sethide={setorderhide}
+        data={orderdata}
+      ></OrderDetails>
       <div className=" min-h-[84vh] pb-5 gap-8 flex px-3 lg:px-8  ">
         <div className="  lg:w-[300px] w-full flex flex-col lg:border-r-2 pt-6 gap-3">
           <div
@@ -214,7 +451,7 @@ const Account = () => {
               My Orders
             </p>
           </div>
-          <div
+          {/* <div
             onClick={() => {
               setorders(false);
               setwishlist(true);
@@ -241,9 +478,12 @@ const Account = () => {
             <p className=" py-3 test-[18px] hover:text-orange-500 cursor-pointer">
               My Wishlist
             </p>
-          </div>
+          </div> */}
           <div className=" bg-slate-100 border hover:bg-white shadow-sm  pl-2 rounded-tl-md rounded-bl-md">
-            <p className=" py-3 test-[18px] hover:text-orange-500 cursor-pointer">
+            <p
+              onClick={() => logoutt()}
+              className=" py-3 test-[18px] hover:text-orange-500 cursor-pointer"
+            >
               Logout
             </p>
           </div>
@@ -489,10 +729,19 @@ const Account = () => {
           width={"100%"}
           footer={false}
         >
-          <div className="flex flex-col mt-[-15px] gap-4">
+          <div className="flex flex-col mt-[-15px] ">
             <div>
               <p className=" lg:text-xl  text-2xl font-semibold">My Orders</p>
               <p className=" text-gray-500 mt-1">View and Manage your orders</p>
+            </div>
+
+            <div className=" overflow-scroll mt-2">
+              <Table
+                className=" w-full"
+                columns={columnss2}
+                pagination={{ pageSize: 8 }}
+                dataSource={AllOrder}
+              ></Table>
             </div>
           </div>
         </Drawer>
@@ -752,12 +1001,166 @@ const Account = () => {
             </div>
           </div>
           <div className={`${orders ? "" : "hidden"} h-full`}>
-            <div>
+            <div className=" w-[600px]">
               <p className=" lg:text-3xl  text-2xl font-semibold">My Orders</p>
               <p className=" text-gray-500 mt-1">
-                You can edit/update your profile information by click on edit
-                profile button.
+                You can see your Orders information here
               </p>
+            </div>
+            <div className=" w-full ">
+              {/* <table className="  w-full">
+                <thead>
+                  <tr className=" h-[50px] text-xl">
+                    <th className=" text-start">No</th>
+                    <th className=" text-start ">Order ID</th>
+                    <th className=" text-start ">Payment</th>
+                    <th className=" text-start ">Qty</th>
+                    <th className=" text-start">Price</th>
+                    <th className=" text-start">status</th>
+                  </tr>
+                </thead>
+
+                <tbody className=" border h-[200px] overflow-hidden overflow-y-scroll">
+                  {AllOrder.map((p, i) => (
+                    <tr className=" font-normal h-[30px]">
+                      <td>{i + 1}</td>
+                      <td className="order">{p._id}</td>
+                      <td className=" text-start ">
+                        {p.paymentDone ? (
+                          <p className=" bg-green-700 w-6 h-6 grid place-content-center rounded-full">
+                            {" "}
+                            <CheckOutlined style={{ color: "white" }} />{" "}
+                          </p>
+                        ) : (
+                          <p className=" bg-red-700 w-6 h-6 grid place-content-center rounded-full">
+                            <CloseOutlined style={{ color: "white" }} />
+                          </p>
+                        )}
+                      </td>
+
+                      <td>{p.items.length}</td>
+                      <td>{p.totalAmount}</td>
+                      <td>{p.orderStatus}</td>
+                    </tr>
+                  ))}
+                  {AllOrder.map((p, i) => (
+                    <tr className=" font-normal h-[30px]">
+                      <td>{i + 1}</td>
+                      <td className="order">{p._id}</td>
+                      <td className=" text-start ">
+                        {p.paymentDone ? (
+                          <p className=" bg-green-700 w-6 h-6 grid place-content-center rounded-full">
+                            {" "}
+                            <CheckOutlined style={{ color: "white" }} />{" "}
+                          </p>
+                        ) : (
+                          <p className=" bg-red-700 w-6 h-6 grid place-content-center rounded-full">
+                            <CloseOutlined style={{ color: "white" }} />
+                          </p>
+                        )}
+                      </td>
+
+                      <td>{p.items.length}</td>
+                      <td>{p.totalAmount}</td>
+                      <td>{p.orderStatus}</td>
+                    </tr>
+                  ))}
+                  {AllOrder.map((p, i) => (
+                    <tr className=" font-normal h-[30px]">
+                      <td>{i + 1}</td>
+                      <td className="order">{p._id}</td>
+                      <td className=" text-start ">
+                        {p.paymentDone ? (
+                          <p className=" bg-green-700 w-6 h-6 grid place-content-center rounded-full">
+                            {" "}
+                            <CheckOutlined style={{ color: "white" }} />{" "}
+                          </p>
+                        ) : (
+                          <p className=" bg-red-700 w-6 h-6 grid place-content-center rounded-full">
+                            <CloseOutlined style={{ color: "white" }} />
+                          </p>
+                        )}
+                      </td>
+
+                      <td>{p.items.length}</td>
+                      <td>{p.totalAmount}</td>
+                      <td>{p.orderStatus}</td>
+                    </tr>
+                  ))}
+                  {AllOrder.map((p, i) => (
+                    <tr className=" font-normal h-[30px]">
+                      <td>{i + 1}</td>
+                      <td className="order">{p._id}</td>
+                      <td className=" text-start ">
+                        {p.paymentDone ? (
+                          <p className=" bg-green-700 w-6 h-6 grid place-content-center rounded-full">
+                            {" "}
+                            <CheckOutlined style={{ color: "white" }} />{" "}
+                          </p>
+                        ) : (
+                          <p className=" bg-red-700 w-6 h-6 grid place-content-center rounded-full">
+                            <CloseOutlined style={{ color: "white" }} />
+                          </p>
+                        )}
+                      </td>
+
+                      <td>{p.items.length}</td>
+                      <td>{p.totalAmount}</td>
+                      <td>{p.orderStatus}</td>
+                    </tr>
+                  ))}
+                  {AllOrder.map((p, i) => (
+                    <tr className=" font-normal h-[30px]">
+                      <td>{i + 1}</td>
+                      <td className="order">{p._id}</td>
+                      <td className=" text-start ">
+                        {p.paymentDone ? (
+                          <p className=" bg-green-700 w-6 h-6 grid place-content-center rounded-full">
+                            {" "}
+                            <CheckOutlined style={{ color: "white" }} />{" "}
+                          </p>
+                        ) : (
+                          <p className=" bg-red-700 w-6 h-6 grid place-content-center rounded-full">
+                            <CloseOutlined style={{ color: "white" }} />
+                          </p>
+                        )}
+                      </td>
+
+                      <td>{p.items.length}</td>
+                      <td>{p.totalAmount}</td>
+                      <td>{p.orderStatus}</td>
+                    </tr>
+                  ))}
+                  {AllOrder.map((p, i) => (
+                    <tr className=" font-normal h-[30px]">
+                      <td>{i + 1}</td>
+                      <td className="order">{p._id}</td>
+                      <td className=" text-start ">
+                        {p.paymentDone ? (
+                          <p className=" bg-green-700 w-6 h-6 grid place-content-center rounded-full">
+                            {" "}
+                            <CheckOutlined style={{ color: "white" }} />{" "}
+                          </p>
+                        ) : (
+                          <p className=" bg-red-700 w-6 h-6 grid place-content-center rounded-full">
+                            <CloseOutlined style={{ color: "white" }} />
+                          </p>
+                        )}
+                      </td>
+
+                      <td>{p.items.length}</td>
+                      <td>{p.totalAmount}</td>
+                      <td>{p.orderStatus}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table> */}
+
+              <Table
+                columns={columnss}
+                pagination={{ pageSize: 8 }}
+                dataSource={AllOrder}
+              ></Table>
             </div>
           </div>
           <div className={`${wishlist ? "" : "hidden"} h-full`}>

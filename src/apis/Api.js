@@ -70,6 +70,25 @@ export const getAllProducts = () => {
     "https://finalyeartyproject-production.up.railway.app/api/v1/product/get-product"
   );
 };
+export const getSpecificProducts = (id) => {
+  console.log(
+    `https://finalyeartyproject-production.up.railway.app/api/v1/auth/product-filters?=${id}`
+  );
+  return fetch(
+    `https://finalyeartyproject-production.up.railway.app/api/v1/product/product-filters?category=${id}`
+  );
+};
+
+export const getSearchProducts = (name, token) => {
+  return fetch(
+    `https://finalyeartyproject-production.up.railway.app/api/v1/auth/search?q=${name}`,
+    {
+      headers: {
+        Authorization: `${token}`,
+      },
+    }
+  );
+};
 
 export const GetSingleProduct = (slug) => {
   return fetch(`${baseurl}/api/v1/product/get-single-product/${slug}`);
@@ -130,5 +149,14 @@ export const DecCartItems = (value, token) => {
       "Content-type": "application/json",
     },
     body: JSON.stringify(value),
+  });
+};
+
+export const getAllUserOrder = (id, token) => {
+  console.log(id, token);
+  return fetch(`${baseurl}/api/v1/auth/get-order/:${id}`, {
+    headers: {
+      Authorization: `${token}`,
+    },
   });
 };

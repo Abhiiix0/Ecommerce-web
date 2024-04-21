@@ -7,6 +7,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { products } from "../ProductsData";
 import { getAllProducts } from "../apis/Api";
 import { Link } from "react-router-dom";
+import Product2 from "./Product2";
 const SimilarProducts = (similar) => {
   // console.log(similar);
   const [datas, setdatas] = useState();
@@ -65,7 +66,7 @@ const SimilarProducts = (similar) => {
             {/* <div className="h-80 w-64 bg-slate-400"></div> */}
 
             {first8Products?.map((items) => (
-              <Products data={items} type=""></Products>
+              <Product2 data={items} type=""></Product2>
             ))}
           </div>
         </div>

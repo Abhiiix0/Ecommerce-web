@@ -57,38 +57,60 @@ const Footer = () => {
           <div>
             <p className=" font-semibold">USEFUL LINKS</p>
             <div className=" lg:flex lg:flex-col lg:gap-1 mt-2">
-              <NavLink className=" text-gray-500 text-sm border-r-2 lg:border-r-0 border-gray-400 h-fit pr-2  mr-2 hover:text-orange-500">
-                About us
+              <NavLink
+                to="/contact"
+                className=" text-gray-500 text-sm border-r-2 lg:border-r-0 border-gray-400 h-fit pr-2  mr-2 hover:text-orange-500"
+              >
+                Contact us
               </NavLink>
-              <NavLink className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 h-fit pr-2  mr-2 hover:text-orange-500">
-                return, Exchange & Refund
+              <NavLink
+                to="/store-locator"
+                className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 h-fit pr-2  mr-2 hover:text-orange-500"
+              >
+                Store Locations
               </NavLink>
 
-              <NavLink className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 h-fit pr-2  mr-2 hover:text-orange-500">
+              {/* <NavLink className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 h-fit pr-2  mr-2 hover:text-orange-500">
                 Term & Conditions
               </NavLink>
 
               <NavLink className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 h-fit pr-2 mr-2 hover:text-orange-500">
                 How To Order
-              </NavLink>
+              </NavLink> */}
             </div>
           </div>
           <div>
             <p className=" font-semibold">CATEGORIES</p>
             <div className=" lg:flex lg:flex-col lg:gap-1 mt-2">
-              <NavLink className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 h-fit pr-2  mr-2 hover:text-orange-500">
+              <NavLink
+                to="/store"
+                state={{ url: "65f6a095577858f9f71a008e" }}
+                className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 h-fit pr-2  mr-2 hover:text-orange-500"
+              >
                 Analog
               </NavLink>
 
-              <NavLink className=" text-gray-500 text-sm border-r-2 hover:text-orange-500 lg:border-r-0 border-gray-400 h-fit pr-2 mr-2">
+              <NavLink
+                to="/store"
+                state={{ url: "65f6a0d7577858f9f71a0091" }}
+                className=" text-gray-500 text-sm border-r-2 hover:text-orange-500 lg:border-r-0 border-gray-400 h-fit pr-2 mr-2"
+              >
                 Digital
               </NavLink>
-              <NavLink className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 hover:text-orange-500 h-fit pr-2  mr-2">
+              <NavLink
+                to="/store"
+                state={{ url: "65f6a100577858f9f71a0094" }}
+                className=" text-gray-500 text-sm border-r-2 border-gray-400 lg:border-r-0 hover:text-orange-500 h-fit pr-2  mr-2"
+              >
                 Smartwatch
               </NavLink>
 
-              <NavLink className=" text-gray-500 hover:text-orange-500 text-sm border-r-2 lg:border-r-0 border-gray-400 h-fit pr-2 mr-2">
-                Watch Finder
+              <NavLink
+                to="/store"
+                state={{ url: " " }}
+                className=" text-gray-500 hover:text-orange-500 text-sm border-r-2 lg:border-r-0 border-gray-400 h-fit pr-2 mr-2"
+              >
+                All Watch
               </NavLink>
             </div>
           </div>
