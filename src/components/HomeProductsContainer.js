@@ -6,6 +6,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 // import Products from "./Products";
 import { products } from "../ProductsData";
 import { getAllProducts } from "../apis/Api";
+import { NavLink } from "react-router-dom";
 const HomeProductsContainer = ({ title, subtitle, types }) => {
   const [datas, setdatas] = useState();
 
@@ -60,7 +61,10 @@ const HomeProductsContainer = ({ title, subtitle, types }) => {
               <Products data={items} type=""></Products>
             ))}
           </div>
-          <a className=" mt-5 sm:mt-6 relative transition duration-400 ease-linear  group border-2 flex text-center justify-center gap-3 hover:bg-red-600 hover:text-white  items-center w-64 h-12 border-red-600 tracking-wide text-red-600 font-medium text-[13px]">
+          <NavLink
+            to="/store"
+            className=" mt-5 sm:mt-6 relative transition duration-400 ease-linear  group border-2 flex text-center justify-center gap-3 hover:bg-red-600 hover:text-white  items-center w-64 h-12 border-red-600 tracking-wide text-red-600 font-medium text-[13px]"
+          >
             VIEW ALL PRODUCTS{" "}
             <div className="w-[40px] group-hover:pl-4 ">
               <div className="">
@@ -70,7 +74,7 @@ const HomeProductsContainer = ({ title, subtitle, types }) => {
                 />
               </div>
             </div>
-          </a>
+          </NavLink>
         </div>
       </section>
     </>

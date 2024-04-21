@@ -7,7 +7,7 @@ import {
   DecreaseItemQty,
 } from "../ReduxApi/AddToCart";
 import { ShoppingCartOutlined, TruckOutlined } from "@ant-design/icons";
-import { json, useNavigate } from "react-router-dom";
+import { NavLink, json, useNavigate } from "react-router-dom";
 import { DecCartItems, DeleteCartItems, IncCartItems } from "../apis/Api";
 import { products } from "../ProductsData";
 import { message } from "antd";
@@ -136,9 +136,12 @@ const Cart = () => {
                           />
                           <div className=" w-full">
                             <div className=" flex sm:pt-3 pr-2 gap-2 justify-between">
-                              <p className=" text-[13px] sm:text-[16px] leading-tight ">
+                              <NavLink
+                                to={`/products/${products.product.slug}`}
+                                className=" text-[13px] sm:text-[16px] leading-tight "
+                              >
                                 {products.product.name}
-                              </p>
+                              </NavLink>
                               <p className=" text-[13px]  text-center  sm:text-[16px]">
                                 ₹{products.product.price * products.quantity}
                               </p>

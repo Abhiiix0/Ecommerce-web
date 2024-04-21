@@ -4,12 +4,16 @@ import { products } from "../ProductsData";
 import { Slider, Checkbox, Skeleton, Drawer } from "antd";
 import { useForm } from "react-hook-form";
 import { resetWarned } from "antd/es/_util/warning";
-import { getAllProducts } from "../apis/Api";
+import { getAllProducts, getSpecificProducts } from "../apis/Api";
 import { Option } from "@mui/base";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 // import { Filter } from "@mui/icons-material";
 
 const Store = () => {
+  const location = useLocation();
+  const { url = "" } = location.state ?? { url: "" };
+  const [urlss, seturlss] = useState(url);
+  console.log("url", url);
   const [isloading, setisloading] = useState(false);
   const [datas, setdatas] = useState([]);
   const [hide, sethides] = useState(false);
@@ -20,19 +24,41 @@ const Store = () => {
     strapcolor: [],
     dialcolor: [],
   });
-  const getProducts = async () => {
+
+  const getProducts = async (url) => {
     setisloading(true);
+    console.log(url);
     try {
-      const res = await getAllProducts();
-      const data = await res.json();
-      console.log("datas", data.products);
-      // datas ? setdatas(datas.products) : setdatas(products);
-      setdatas(data.products);
-      setisloading(false);
+      if (url === "") {
+        const res = await getAllProducts();
+        const data = await res.json();
+        console.log("datas", data.products);
+        setdatas(data.products);
+        setisloading(false);
+      } else {
+        const res = await getSpecificProducts(url);
+        const data = await res.json();
+        console.log("datas", data.products);
+        setdatas(data.products);
+        setisloading(false);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+  // const getProducts = async () => {
+  //   setisloading(true);
+  //   try {
+  //     const res = await getAllProducts();
+  //     const data = await res.json();
+  //     console.log("datas", data.products);
+  //     // datas ? setdatas(datas.products) : setdatas(products);
+  //     setdatas(data.products);
+  //     setisloading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const { register, handleSubmit, reset, resetField } = useForm();
 
@@ -67,12 +93,17 @@ const Store = () => {
       strapcolor: [],
     });
   };
-
+  // getProducts(url);
+  // seturlss(url);
+  // console.log(url);
   // const dialcolor = ["black"];
   // const strapcolor = ["silver"];
   useEffect(() => {
-    getProducts();
-  }, []);
+    // seturlss(url);
+    const { url = "" } = location.state ?? { url: "" };
+
+    getProducts(url);
+  }, [location.state]);
 
   useEffect(() => {
     // product filter
@@ -140,6 +171,22 @@ const Store = () => {
     (d, i) => dialcoloroptions.indexOf(d) === i
   );
   console.log("dialcolor", uniquedialcolor);
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(filterProducts.length / 12);
+
+  const handleClick = (type) => {
+    if (type === "prev") {
+      setCurrentPage((prev) => Math.max(prev - 1, 1));
+    } else if (type === "next") {
+      setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+    }
+  };
+
+  const startIndex = (currentPage - 1) * 12;
+  const endIndex = startIndex + 12;
+  const currentItems = filterProducts.slice(startIndex, endIndex);
 
   return (
     <>
@@ -362,11 +409,8 @@ const Store = () => {
             </div>
             <div className=" fixed md:hidden z-[1] bg-white bottom-0 left-0 w-full">
               <div className="flex border justify-center items-center w-full">
-                <div className=" text-red-500 border-r-2 text-center w-full flex justify-center items-center py-3">
-                  <p>SHOT </p>
-                </div>
                 <div
-                  className="text-red-500 w-full text-center"
+                  className="text-red-500 py-2 tracking-wider font-medium border-t-2 w-full text-center"
                   onClick={() => sethides(!hide)}
                 >
                   FILTER
@@ -375,9 +419,9 @@ const Store = () => {
             </div>
             <div className=" w-full h-fit ">
               <div className=" flex items-center justify-between h-16 pl-0 lg:pl-6">
-                <p className=" text-sm font-semibold text-gray-400">
+                <p className=" text-sm font-semibold pl-2 lg:p-0 text-gray-400">
                   {" "}
-                  Home &gt; Analog Watch
+                  Home &gt; Store
                 </p>
               </div>
               {/* <div className="p-5 border flex justify-center items-center"> */}
@@ -395,14 +439,30 @@ const Store = () => {
                   </div>
                 )}
                 {/* <div className=" flex gap-2 flex-wrap"> */}
-                {filterProducts.map((item) => (
+                {currentItems.map((item) => (
                   // <NavLink className=" w-fit border overflow-hidden">
-                  <Products data={item} type=""></Products>
                   // </NavLink>
+                  <Products data={item} type=""></Products>
                 ))}
-                {/* </div> */}
-                {/* </div> */}
+
                 {filterProducts.length === 0 ? <p>No Product Found</p> : ""}
+              </div>
+              <div className=" flex justify-center items-center w-full mb-5">
+                <button
+                  className=" cursor-pointer w-[80px] mr-2 font-semibold bg-blue-500 py-2 px-2 rounded-md text-white"
+                  onClick={() => handleClick("prev")}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+                <span>{currentPage}</span> / <span>{totalPages}</span>
+                <button
+                  className=" cursor-pointer w-[80px] ml-2 font-semibold bg-blue-500 py-2 px-2 rounded-md text-white"
+                  onClick={() => handleClick("next")}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
               </div>
             </div>
           </div>

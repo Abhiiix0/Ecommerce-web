@@ -23,8 +23,9 @@ import { CartSet, logoutCart, totalItems } from "../ReduxApi/AddToCart";
 import { logout } from "../ReduxApi/authSlice";
 // import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../ReduxApi/authSlice";
-import { loginAPi, RegisterAPi } from "../apis/Api";
+import { getSearchProducts, loginAPi, RegisterAPi } from "../apis/Api";
 import ForgetPassword from "./ForgetPassword";
+import SrchModal from "./SrchModal";
 const Navbar = () => {
   const navigate = useNavigate();
   const [FHide, setFHide] = useState(false);
@@ -36,11 +37,10 @@ const Navbar = () => {
   const [isopen, setisopen] = useState(false);
   const [LR, setLR] = useState(true);
   const [showPass, setshowPass] = useState(false);
-
   const dispatch = useDispatch();
   const cartItem = useSelector((state) => state.cart.cartItem);
   const auth = useSelector((state) => state.auth);
-
+  const [srchbtnhide, setsrchbtnhide] = useState(false);
   // const token = useSelector((state) => state.auth.token);
 
   function logoutt() {
@@ -99,15 +99,16 @@ const Navbar = () => {
     // console.log(value);
   };
   const onLoginsubmit = async (value) => {
+    console.log(value);
     try {
       const response = await loginAPi(value);
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      console.log(response);
       const data = await response.json();
-      console.log("resLogin", data);
+      // console.log(response);
+      // console.log("resLogin", data);
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
       // if (data.success) {
       //   setInterval(() => {
       //     setLR(true);
@@ -133,7 +134,7 @@ const Navbar = () => {
           type: "error",
           content: data.message,
         });
-        dispatch(setCurrentUser(data));
+        // dispatch(setCurrentUser(data));
       }
       console.log("Success:", data);
     } catch (error) {
@@ -173,10 +174,7 @@ const Navbar = () => {
       ),
       key: "0",
     },
-    {
-      label: <a>My Orders</a>,
-      key: "1",
-    },
+
     {
       type: "divider",
     },
@@ -192,17 +190,18 @@ const Navbar = () => {
       content: "please login to access this page",
     });
   };
+
   return (
     <>
       {contextHolder}
       <section className="relative">
+        <SrchModal open={srchbtnhide} sethide={setsrchbtnhide}></SrchModal>
         <ForgetPassword setFHide={setFHide} FHide={FHide}></ForgetPassword>
         <header
           // style={{ display: stickyclass ? "none" : "" }}
           className=" hidden text-center lg:flex items-center justify-end pr-5 h-7 text-[12px] border-b-2 border-gray-300"
         >
           <ul className="flex items-center tracking-wider justify-between w-fit ">
-            <li className=" px-3">Track Order</li>
             <li className=" border-l-2  px-3">
               {" "}
               <NavLink to="/store-locator">Store Locations</NavLink>{" "}
@@ -219,14 +218,14 @@ const Navbar = () => {
                 }}
                 trigger={["click"]}
               >
-                <a
+                <p
                   onClick={(e) => e.preventDefault()}
                   className=" cursor-pointer  w-fit px-4 "
                 >
                   <UserOutlined className="mr-1" />
                   {CurrentUser.currentUser.name}
                   <DownOutlined className=" ml-3" />
-                </a>
+                </p>
               </Dropdown>
             ) : (
               <li
@@ -264,10 +263,10 @@ const Navbar = () => {
                         className="outline-none border w-full h-full px-3"
                         type="text"
                         placeholder="Email"
-                        {...register("email", {
-                          required: "Email is required",
-                        })}
+                        {...register("email")}
+                        required
                       />
+                      <p></p>
                     </div>
 
                     <div className=" border flex  justify-center rounded-md overflow-hidden items-center h-10">
@@ -283,9 +282,8 @@ const Navbar = () => {
                         className=" border outline-none w-full h-full px-3"
                         type={showPass ? "text" : "password"}
                         placeholder="Password"
-                        {...register("password", {
-                          required: "Password is required",
-                        })}
+                        required
+                        {...register("password")}
                       />
                     </div>
 
@@ -352,9 +350,8 @@ const Navbar = () => {
                         type="text"
                         placeholder="Username"
                         autoComplete="off"
-                        {...register("name", {
-                          required: "Username is required",
-                        })}
+                        {...register("name")}
+                        required
                       />
                     </div>
                     <div className=" border flex justify-center rounded-md overflow-hidden items-center h-10">
@@ -369,9 +366,8 @@ const Navbar = () => {
                         className="outline-none border w-full h-full px-3"
                         type="mail"
                         placeholder="Email"
-                        {...register("email", {
-                          required: "email is required",
-                        })}
+                        {...register("email")}
+                        required
                       />
                     </div>
 
@@ -387,9 +383,8 @@ const Navbar = () => {
                         className="outline-none border w-full h-full px-3"
                         type="number"
                         placeholder="Phone Number"
-                        {...register("phone", {
-                          required: "Number is required",
-                        })}
+                        {...register("phone")}
+                        required
                       />
                     </div>
                     <div className=" border flex justify-center rounded-md overflow-hidden items-center h-10">
@@ -404,9 +399,8 @@ const Navbar = () => {
                         className=" border outline-none w-full h-full px-3"
                         type={showPass ? "text" : "password"}
                         placeholder="Password"
-                        {...register("password", {
-                          required: "Password is required",
-                        })}
+                        {...register("password")}
+                        required
                       />
                     </div>
                     <div className=" ">
@@ -484,50 +478,55 @@ const Navbar = () => {
                 <li className=" hidden lg:block">
                   <NavLink
                     to="/store"
+                    state={{ url: "65f6a095577858f9f71a008e" }}
                     className=" text-sm font-medium text-gray-600 transition-all duration-100 ease-linear border-orange-400 pb-2 w-fit px-1 hover:border-b-2"
                   >
                     ANALOG
                   </NavLink>
                 </li>
                 <li className=" hidden lg:block">
-                  <a
-                    href="#"
+                  <NavLink
+                    to="/store"
+                    state={{ url: "65f6a0d7577858f9f71a0091" }}
                     className=" text-sm font-medium text-gray-600 transition-all duration-100 ease-linear border-orange-400 pb-2 w-fit px-1 hover:border-b-2"
                   >
                     DIGITAL
-                  </a>
+                  </NavLink>
                 </li>
                 <li className=" hidden lg:block">
-                  <a
-                    href="#"
+                  <NavLink
+                    to="/store"
+                    state={{ url: "65f6a100577858f9f71a0094" }}
                     className=" text-sm font-medium text-gray-600 transition-all duration-100 ease-linear border-orange-400 pb-2 w-fit px-1 hover:border-b-2"
                   >
                     SMARTWATCHS
-                  </a>
+                  </NavLink>
                 </li>
                 <li className=" hidden lg:block">
-                  <a
-                    href="#"
+                  <NavLink
+                    to="/store"
+                    state={{ url: " " }}
                     className=" text-sm font-medium text-gray-600 transition-all duration-100 ease-linear border-orange-400 pb-2 w-fit px-1 hover:border-b-2"
                   >
-                    WATCH FINDER
-                  </a>
+                    ALL WATCHES
+                  </NavLink>
                 </li>
-                <li>
-                  <div className=" bg-slate-100 border h-[44px] w-60  items-center px-4 gap-3 rounded-md hidden lg:flex">
+
+                <li onClick={() => setsrchbtnhide(true)} className=" relative">
+                  <div className=" bg-slate-100 border h-10 w-11 grid place-content-center  items-center  gap-3 rounded-md">
                     <SearchOutlinedIcon className=" text-black" />
-                    <input
+                    {/* <input
                       type="text"
                       placeholder="Search for products"
                       className=" bg-transparent outline-0 "
-                    />
+                    /> */}
                   </div>
                 </li>
-                <li>
-                  <a href="#" className=" h-[25px] w-[30px]">
+                {/* <li>
+                  <NavLink to="/wishlist" className=" h-[25px] w-[30px]">
                     <FavoriteBorderOutlinedIcon id="heart" s />
-                  </a>
-                </li>
+                  </NavLink>
+                </li> */}
                 <li>
                   <NavLink
                     to={isAuthenticated ? "/cart" : ""}
@@ -546,7 +545,11 @@ const Navbar = () => {
             <Drawer
               open={hides}
               // header={false}
-              extra={<NavLink to="/">Good Times</NavLink>}
+              extra={
+                <NavLink to="/" className=" font-bold text-xl">
+                  Good Time
+                </NavLink>
+              }
               className=" m-0 p-0"
               // placement="left"
               onClick={() => sethides(false)}
@@ -557,16 +560,33 @@ const Navbar = () => {
               >
                 <ul className="bg-white">
                   <li className=" border-b-[2px] font-semibold text-[16px] pb-4">
-                    <NavLink to="/store">Analog</NavLink>
+                    <NavLink
+                      to="/store"
+                      state={{ url: "65f6a095577858f9f71a008e" }}
+                    >
+                      ANALOG
+                    </NavLink>
                   </li>
                   <li className=" border-b-[2px] font-semibold text-[16px] py-4">
-                    <a href="#">Digital</a>
+                    <NavLink
+                      to="/store"
+                      state={{ url: "65f6a0d7577858f9f71a0091" }}
+                    >
+                      DIGITAL
+                    </NavLink>
                   </li>
                   <li className=" border-b-[2px] font-semibold text-[16px] py-4">
-                    <a href="#">Smartwatch</a>
+                    <NavLink
+                      to="/store"
+                      state={{ url: "65f6a100577858f9f71a0094" }}
+                    >
+                      SMARTWATCH
+                    </NavLink>
                   </li>
                   <li className=" font-semibold text-[16px] py-4">
-                    <a href="#">Watch Filnder</a>
+                    <NavLink to="/store" state={{ url: " " }}>
+                      ALL WATCHES
+                    </NavLink>
                   </li>
                 </ul>
                 <ul className=" px-2 flex flex-col gap-5 h-fit py-6 rounded-md bg-slate-200">
@@ -593,9 +613,6 @@ const Navbar = () => {
                     </li>
                   )}
 
-                  <li className=" font-normal text-[16px] ">
-                    <a href="#">Track Order</a>
-                  </li>
                   <li className=" font-normal text-[16px] ">
                     <NavLink to="/store-locator">Store Locations</NavLink>{" "}
                   </li>

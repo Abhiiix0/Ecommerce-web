@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 let storedCart = JSON.parse(localStorage.getItem("cart")) || null;
 const initialState = {
+  cartID: storedCart ? storedCart.cartID : "",
   cart: storedCart ? storedCart.cart : [],
   cartItem: storedCart ? storedCart.cartItem : 0,
   cartPrice: storedCart ? storedCart.cartPrice : 0,
@@ -14,6 +15,7 @@ export const cartSlice = createSlice({
     CartSet: (state, action) => {
       var data = action.payload;
       console.log("set", data);
+      state.cartID = action.payload.cartId;
       state.cart = { items: action.payload.cartItems };
       state.cartItem = action.payload.totalCartItem;
       state.cartPrice = action.payload.totalCartValue;
@@ -25,6 +27,7 @@ export const cartSlice = createSlice({
     addToCart: (state, action) => {
       var data = action.payload;
       console.log("sdf0", data);
+      state.cartID = action.payload.cartId;
       state.cart = action.payload.cart;
       state.cartItem = action.payload.totalCartItem;
       state.cartPrice = action.payload.totalCartValue;
