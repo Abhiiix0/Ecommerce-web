@@ -154,7 +154,7 @@ export const DecCartItems = (value, token) => {
 
 export const getAllUserOrder = (id, token) => {
   console.log(id, token);
-  return fetch(`${baseurl}/api/v1/auth/get-order/:${id}`, {
+  return fetch(`${baseurl}/api/v1/auth/get-order/${id}`, {
     headers: {
       Authorization: `${token}`,
     },
