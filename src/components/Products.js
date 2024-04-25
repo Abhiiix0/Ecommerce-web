@@ -47,26 +47,23 @@ const Products = ({ data, type }) => {
     }
   };
 
-  const handelWishList = (item) => {
-    dispatch(AddToWishlist(item));
-  };
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: "smooth" }); // Scrolls to the top of the page smoothly
   };
   return (
     <>
-      <NavLink
+      <div
         // onClick={() => handleClick()}
         className="group shadow  border overflow-hidden  w-[48%] sm:w-[280px] rounded-md   hover:shadow-lg cursor-pointer h-fit "
       >
         <div className=" relative w-full flex flex-col justify-end   items-center rounded-md h-fit sm:h-fit">
-          <div className="  w-fit h-fit">
+          <NavLink to={`/products/${data.slug}`} className="  w-fit h-fit">
             <img
               src={data.images[0]}
               className=" p-7  sm:p-2 relative transition-all duration-150 easy-linear sm:rounded-md sm:group-hover:w-fit group-hover:rounded-none"
               alt=""
             />
-          </div>
+          </NavLink>
           <div className=" absolute flex justify-between items-center sm:px-2 pt-0 sm:pt-4 top-3 sm:top-5 left-0 h-fit w-full ">
             {type === "New" ? (
               <div
@@ -122,7 +119,7 @@ const Products = ({ data, type }) => {
             </div>
           </div>
         </div>
-      </NavLink>
+      </div>
     </>
   );
 };
