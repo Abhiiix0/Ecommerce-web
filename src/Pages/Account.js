@@ -479,6 +479,7 @@ const Account = () => {
               My Wishlist
             </p>
           </div> */}
+
           <div className=" bg-slate-100 border hover:bg-white shadow-sm  pl-2 rounded-tl-md rounded-bl-md">
             <p
               onClick={() => logoutt()}

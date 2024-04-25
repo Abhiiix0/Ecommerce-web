@@ -20,6 +20,8 @@ const PrivateUser = () => {
         }
       );
       console.log("response", res);
+      const data = await res.json();
+      console.log("data", data);
       if (res.ok) {
         setok(true);
         console.log("res", res.json());
@@ -30,7 +32,7 @@ const PrivateUser = () => {
     };
 
     autocheck();
-  }, [auth]);
+  }, [auth, ok]);
 
   return ok ? <Outlet /> : <Spinner path="/" />;
 };
