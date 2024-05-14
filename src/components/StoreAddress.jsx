@@ -25,10 +25,10 @@ const StoreAddress = () => {
         <p>Business Hours:</p>
         <p>11:00 AM to 10:00 PM (open 7 days a week)</p>
       </div>
-      <button className=" my-3 hover:bg-red-700 bg-red-600 tracking-wider rounded-md h-10 w-fit px-4 text-white font-semibold">
+      {/* <button className=" my-3 hover:bg-red-700 bg-red-600 tracking-wider rounded-md h-10 w-fit px-4 text-white font-semibold">
         {" "}
         Direction
-      </button>
+      </button> */}
     </div>
   );
 };

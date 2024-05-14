@@ -20,12 +20,6 @@ const StoreLocator = () => {
 
         <div className=" max-w-[1230px] flex my-5 md:my-10 gap-4 md:gap-8 justify-center flex-wrap">
           <StoreAddress />
-          <StoreAddress />
-          <StoreAddress />
-
-          <StoreAddress />
-          <StoreAddress />
-          <StoreAddress />
         </div>
       </div>
     </div>
