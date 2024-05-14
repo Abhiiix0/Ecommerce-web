@@ -120,7 +120,7 @@ const Footer = () => {
               <div>
                 <p>Mail</p>
                 <p className=" font-medium text-gray-500 text-sm">
-                  Support@GoodTimes.in
+                  goodtime4info@gmail.com
                 </p>
               </div>
               <div>
