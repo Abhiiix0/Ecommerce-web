@@ -12,7 +12,7 @@ const PrivateUser = () => {
     console.log(auth);
     const autocheck = async () => {
       const res = await fetch(
-        "https://finalyeartyproject-production.up.railway.app/api/v1/auth/user-auth",
+        "https://finalyeartyproject.onrender.com/api/v1/auth/user-auth",
         {
           headers: {
             Authorization: `${auth}`,
@@ -24,7 +24,7 @@ const PrivateUser = () => {
       console.log("data", data);
       if (res.ok) {
         setok(true);
-       
+
         navigate("account");
       } else {
         setok(false);

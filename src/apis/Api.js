@@ -1,5 +1,5 @@
 // import { UseSelector, useSelector } from "react-redux";
-const baseurl = "https://finalyeartyproject-production.up.railway.app";
+const baseurl = "https://finalyeartyproject.onrender.com";
 // const token = useSelector((state) => state.auth.token);
 export const loginAPi = (value) => {
   return fetch(`${baseurl}/api/v1/auth/login`, {
@@ -67,21 +67,21 @@ export const UserDataUpate = (value, token) => {
 
 export const getAllProducts = () => {
   return fetch(
-    "https://finalyeartyproject-production.up.railway.app/api/v1/product/get-product"
+    "https://finalyeartyproject.onrender.com/api/v1/product/get-product"
   );
 };
 export const getSpecificProducts = (id) => {
   console.log(
-    `https://finalyeartyproject-production.up.railway.app/api/v1/auth/product-filters?=${id}`
+    `https://finalyeartyproject.onrender.com/api/v1/auth/product-filters?=${id}`
   );
   return fetch(
-    `https://finalyeartyproject-production.up.railway.app/api/v1/product/product-filters?category=${id}`
+    `https://finalyeartyproject.onrender.com/api/v1/product/product-filters?category=${id}`
   );
 };
 
 export const getSearchProducts = (name, token) => {
   return fetch(
-    `https://finalyeartyproject-production.up.railway.app/api/v1/auth/search?q=${name}`,
+    `https://finalyeartyproject.onrender.com/api/v1/auth/search?q=${name}`,
     {
       headers: {
         Authorization: `${token}`,

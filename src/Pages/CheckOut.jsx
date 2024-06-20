@@ -49,7 +49,7 @@ const CheckOut = () => {
       const cartId = cartID;
       // Make API call to initiate payment
       const response = await fetch(
-        "https://finalyeartyproject-production.up.railway.app/api/v1/auth/create-rozarpay-order",
+        "https://finalyeartyproject.onrender.com/api/v1/auth/create-rozarpay-order",
         {
           method: "POST",
           headers: {
@@ -87,7 +87,7 @@ const CheckOut = () => {
           const body = { ...response };
           try {
             const verifyPayment = await fetch(
-              "https://finalyeartyproject-production.up.railway.app/api/v1/auth/verify-order",
+              "https://finalyeartyproject.onrender.com/api/v1/auth/verify-order",
               {
                 method: "POST",
                 headers: {
@@ -100,7 +100,7 @@ const CheckOut = () => {
             console.log(verify);
             if (verify.success) {
               const res = await fetch(
-                "https://finalyeartyproject-production.up.railway.app/api/v1/auth/create-order",
+                "https://finalyeartyproject.onrender.com/api/v1/auth/create-order",
                 {
                   method: "POST",
                   headers: {
